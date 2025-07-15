@@ -1,4 +1,5 @@
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function Pricing() {
   return (
@@ -14,12 +15,12 @@ export default function Pricing() {
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">WRev</span>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Home</a>
-              <a href="/about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</a>
-              <a href="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</a>
-              <a href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</a>
-              <a href="/pricing" className="text-blue-600 font-medium">Pricing</a>
-              <a href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</a>
+              <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Home</Link>
+              <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</Link>
+              <Link href="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
+              <Link href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</Link>
+              <Link href="/pricing" className="text-blue-600 font-medium">Pricing</Link>
+              <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
             </div>
           </div>
         </div>
@@ -238,7 +239,7 @@ export default function Pricing() {
             </div>
             
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">What's included in the hardware?</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">What&apos;s included in the hardware?</h3>
               <p className="text-gray-600">Each plan includes medical-grade sensors, a base station, and all necessary accessories for monitoring.</p>
             </div>
             

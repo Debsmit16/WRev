@@ -1,4 +1,5 @@
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function Privacy() {
   return (
@@ -14,12 +15,12 @@ export default function Privacy() {
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">WRev</span>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Home</a>
-              <a href="/about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</a>
-              <a href="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</a>
-              <a href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</a>
-              <a href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</a>
-              <a href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</a>
+              <Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Home</Link>
+              <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</Link>
+              <Link href="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
+              <Link href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</Link>
+              <Link href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
+              <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
             </div>
           </div>
         </div>
@@ -143,12 +144,12 @@ export default function Privacy() {
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Children's Privacy</h2>
                 <p className="text-gray-600 mb-4">
-                  WRev can be used to monitor children's respiratory health, but we require parental consent:
+                  WRev can be used to monitor children&apos;s respiratory health, but we require parental consent:
                 </p>
                 <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
                   <li>Parental consent required for users under 13</li>
-                  <li>Parents can review and delete their child's data</li>
-                  <li>Special protections for children's health information</li>
+                  <li>Parents can review and delete their child&apos;s data</li>
+                  <li>Special protections for children&apos;s health information</li>
                   <li>Limited data collection for minors</li>
                 </ul>
               </div>

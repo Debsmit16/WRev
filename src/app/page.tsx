@@ -1,4 +1,5 @@
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -14,12 +15,12 @@ export default function Home() {
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">WRev</span>
             </div>
             <div className="hidden md:flex space-x-8">
-              <a href="/" className="text-blue-600 font-medium">Home</a>
-              <a href="/about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</a>
-              <a href="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</a>
-              <a href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</a>
-              <a href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</a>
-              <a href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</a>
+              <Link href="/" className="text-blue-600 font-medium">Home</Link>
+              <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</Link>
+              <Link href="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
+              <Link href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</Link>
+              <Link href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
+              <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
             </div>
           </div>
         </div>

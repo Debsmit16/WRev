@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Footer() {
   return (
     <footer className="bg-gradient-to-br from-gray-100 via-blue-50 to-cyan-50 text-gray-800 relative overflow-hidden border-t border-gray-200">
@@ -51,26 +53,26 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-6 text-gray-800">Quick Links</h3>
             <ul className="space-y-3">
-              <li><a href="/" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
+              <li><Link href="/" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 Home
-              </a></li>
-              <li><a href="/about" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
+              </Link></li>
+              <li><Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 About Us
-              </a></li>
-              <li><a href="/features" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
+              </Link></li>
+              <li><Link href="/features" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 Features
-              </a></li>
-              <li><a href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
+              </Link></li>
+              <li><Link href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 How It Works
-              </a></li>
-              <li><a href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
+              </Link></li>
+              <li><Link href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 Pricing
-              </a></li>
+              </Link></li>
             </ul>
           </div>
 
@@ -78,10 +80,10 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-6 text-gray-800">Support</h3>
             <ul className="space-y-3">
-              <li><a href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
+              <li><Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 Contact Us
-              </a></li>
+              </Link></li>
               <li><a href="#" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 Help Center
@@ -171,7 +173,7 @@ export default function Footer() {
                 &copy; 2025 WRev, Team_Avyantrix. All rights reserved.
               </p>
               <div className="flex space-x-6 text-sm">
-                <a href="/privacy" className="text-gray-500 hover:text-blue-600 transition-colors">Privacy Policy</a>
+                <Link href="/privacy" className="text-gray-500 hover:text-blue-600 transition-colors">Privacy Policy</Link>
                 <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">Terms of Service</a>
                 <a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">Cookie Policy</a>
               </div>
