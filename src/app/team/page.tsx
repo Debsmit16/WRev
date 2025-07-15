@@ -5,23 +5,23 @@ export default function Team() {
   const teamMembers = [
     {
       name: "Debsmit Ghosh",
-      role: "Founder & CEO",
-      bio: "Visionary leader driving innovation in respiratory health technology. Passionate about creating solutions that save lives.",
+      role: "Project Lead",
+      bio: "Leading the WRev project development and coordinating team efforts to create innovative respiratory health solutions.",
       linkedin: "https://www.linkedin.com/in/debsmit-ghosh-23267227b/",
       image: "/team/debsmit-ghosh.jpg",
-      expertise: ["Healthcare Innovation", "Product Strategy", "Team Leadership"]
+      expertise: ["Project Management", "Healthcare Innovation", "Team Coordination"]
     },
     {
       name: "Anuksha Ganguly",
-      role: "Co-Founder & CTO",
-      bio: "Technical architect with expertise in IoT and healthcare systems. Leading the development of WRev's core technology.",
+      role: "Technical Lead",
+      bio: "Technical specialist with expertise in IoT and healthcare systems, architecting WRev's core technology stack.",
       linkedin: "https://www.linkedin.com/in/anuksha-ganguly-3a25b62a7/",
       image: "/team/anuksha-ganguly.jpg",
       expertise: ["IoT Development", "Healthcare Tech", "System Architecture"]
     },
     {
       name: "Ujan Das",
-      role: "Lead Developer",
+      role: "Full-Stack Developer",
       bio: "Full-stack developer specializing in healthcare applications and real-time monitoring systems.",
       linkedin: "https://www.linkedin.com/in/ujan-das-b1995b2a2/",
       image: "/team/ujan-das.jpg",
@@ -30,7 +30,7 @@ export default function Team() {
     {
       name: "Ayushman Das",
       role: "Hardware Engineer",
-      bio: "Hardware specialist focused on medical-grade sensor integration and device optimization.",
+      bio: "Hardware specialist focused on medical-grade sensor integration and device optimization for respiratory monitoring.",
       linkedin: "https://www.linkedin.com/in/ayushman-das-ba6272320/",
       image: "/team/ayushman-das.jpg",
       expertise: ["Hardware Design", "Sensor Integration", "Medical Devices"]
@@ -38,7 +38,7 @@ export default function Team() {
     {
       name: "Sobhan Roy",
       role: "Data Scientist",
-      bio: "AI/ML expert developing predictive algorithms for respiratory health monitoring and analysis.",
+      bio: "AI/ML specialist developing predictive algorithms for respiratory health monitoring and data analysis.",
       linkedin: "https://www.linkedin.com/in/sobhan-roy-596378259/",
       image: "/team/sobhan-roy.jpg",
       expertise: ["Machine Learning", "Data Analysis", "Predictive Modeling"]
