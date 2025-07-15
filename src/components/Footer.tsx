@@ -73,6 +73,10 @@ export default function Footer() {
                 <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
                 Pricing
               </Link></li>
+              <li><Link href="/team" className="text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center group">
+                <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                Our Team
+              </Link></li>
             </ul>
           </div>
 
