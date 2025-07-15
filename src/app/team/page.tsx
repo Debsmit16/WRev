@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Team() {
   const teamMembers = [
@@ -104,7 +105,21 @@ export default function Team() {
                 <div className="relative mb-6">
                   <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 p-1">
                     <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                      <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full flex items-center justify-center">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        width={96}
+                        height={96}
+                        className="w-full h-full object-cover rounded-full"
+                        onError={(e) => {
+                          // Fallback to initials if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const fallback = target.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
+                        }}
+                      />
+                      <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full flex items-center justify-center" style={{display: 'none'}}>
                         <span className="text-white font-bold text-xl">
                           {member.name.split(' ').map(n => n[0]).join('')}
                         </span>
