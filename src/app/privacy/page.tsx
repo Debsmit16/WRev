@@ -142,7 +142,7 @@ export default function Privacy() {
               </div>
 
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Children's Privacy</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Children&apos;s Privacy</h2>
                 <p className="text-gray-600 mb-4">
                   WRev can be used to monitor children&apos;s respiratory health, but we require parental consent:
                 </p>
