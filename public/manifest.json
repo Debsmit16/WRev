@@ -1,0 +1,21 @@
+{
+  "name": "WRev - Respiratory Health Protection System",
+  "short_name": "WRev",
+  "description": "Real-time respiratory and environmental monitoring for asthma and COPD care",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["health", "medical", "lifestyle"],
+  "icons": [
+    {
+      "src": "/icons/wrev-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
