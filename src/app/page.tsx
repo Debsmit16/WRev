@@ -4,81 +4,90 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-white">
-      {/* Navigation */}
-      <nav className="backdrop-blur-md bg-white/80 border-b border-white/20 sticky top-0 z-50">
+      {/* Mobile-Optimized Navigation */}
+      <nav className="backdrop-blur-md bg-white/90 border-b border-white/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-lg">W</span>
+          <div className="flex justify-between items-center h-14 sm:h-16">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                <span className="text-white font-bold text-sm sm:text-lg">W</span>
               </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">WRev</span>
+              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">WRev</span>
             </div>
-            <div className="hidden md:flex space-x-8">
-              <Link href="/" className="text-blue-600 font-medium">Home</Link>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Link href="/dashboard" className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300 active:scale-95">
+                Dashboard
+              </Link>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex space-x-6 lg:space-x-8">
+              <Link href="/" className="text-blue-600 font-medium hover:text-blue-700 transition-colors">Home</Link>
               <Link href="/about" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">About</Link>
               <Link href="/features" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Features</Link>
               <Link href="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">How It Works</Link>
               <Link href="/pricing" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Pricing</Link>
               <Link href="/team" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Team</Link>
               <Link href="/contact" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">Contact</Link>
-              <Link href="/login" className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg transition-all duration-300">Login</Link>
+              <Link href="/dashboard" className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">Dashboard</Link>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Mobile-Optimized Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-14 sm:pt-16">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-cyan-400/20 to-blue-600/20"></div>
         <div className="absolute inset-0 backdrop-blur-3xl"></div>
 
-        {/* Floating animated elements */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-blue-400/30 to-cyan-400/30 rounded-full blur-xl animate-float"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-cyan-400/30 to-blue-500/30 rounded-full blur-xl animate-float-delayed"></div>
-        <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-r from-blue-300/20 to-cyan-300/20 rounded-full blur-2xl animate-pulse"></div>
+        {/* Mobile-Optimized Floating Elements */}
+        <div className="absolute top-20 left-4 sm:left-10 w-20 h-20 sm:w-32 sm:h-32 bg-gradient-to-r from-blue-400/30 to-cyan-400/30 rounded-full blur-xl animate-float"></div>
+        <div className="absolute bottom-20 right-4 sm:right-10 w-24 h-24 sm:w-40 sm:h-40 bg-gradient-to-r from-cyan-400/30 to-blue-500/30 rounded-full blur-xl animate-float-delayed"></div>
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-r from-blue-300/20 to-cyan-300/20 rounded-full blur-2xl animate-pulse"></div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Status Badge */}
-          <div className="inline-flex items-center bg-green-50 border border-green-200 rounded-full px-6 py-2 mb-8 animate-fade-in-up">
-            <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
-            <span className="text-green-700 text-sm font-medium">Live Health Monitoring Active</span>
+          {/* Mobile Status Badge */}
+          <div className="inline-flex items-center bg-green-50 border border-green-200 rounded-full px-4 sm:px-6 py-2 mb-6 sm:mb-8 animate-fade-in-up">
+            <span className="w-2 h-2 bg-green-500 rounded-full mr-2 sm:mr-3 animate-pulse"></span>
+            <span className="text-green-700 text-xs sm:text-sm font-medium">Live Health Monitoring Active</span>
           </div>
 
-          {/* Main Title */}
-          <h1 className="text-6xl lg:text-8xl font-bold mb-6 animate-fade-in-up animation-delay-200">
+          {/* Mobile-Optimized Main Title */}
+          <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold mb-4 sm:mb-6 animate-fade-in-up animation-delay-200">
             <span className="bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-800 bg-clip-text text-transparent">
               WRev
             </span>
           </h1>
 
-          {/* Subtitle */}
-          <h2 className="text-2xl lg:text-4xl font-semibold text-gray-700 mb-6 animate-fade-in-up animation-delay-400">
+          {/* Mobile-Optimized Subtitle */}
+          <h2 className="text-lg sm:text-2xl lg:text-4xl font-semibold text-gray-700 mb-4 sm:mb-6 animate-fade-in-up animation-delay-400 px-2">
             Respiratory Health Protection System
           </h2>
 
-          {/* Description */}
-          <p className="text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed animate-fade-in-up animation-delay-600">
+          {/* Mobile-Optimized Description */}
+          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-4xl mx-auto mb-8 sm:mb-12 leading-relaxed animate-fade-in-up animation-delay-600 px-4">
             Real-time respiratory and environmental monitoring for asthma and COPD care.
             Advanced AI-powered insights to protect your health before symptoms appear.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 animate-fade-in-up animation-delay-800">
-            <button className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+          {/* Mobile-Optimized CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-12 sm:mb-16 animate-fade-in-up animation-delay-800 px-4">
+            <Link href="/dashboard" className="group relative inline-flex items-center justify-center w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300">
               <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
               <span className="relative flex items-center space-x-2">
                 <span>Start Monitoring</span>
-                <svg className="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </span>
-            </button>
+            </Link>
 
-            <button className="group border-2 border-blue-500 text-blue-600 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-blue-50 hover:border-blue-600 transition-all duration-300">
-              <span className="flex items-center space-x-2">
-                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button className="group border-2 border-blue-500 text-blue-600 w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-semibold text-base sm:text-lg hover:bg-blue-50 hover:border-blue-600 active:scale-95 transition-all duration-300">
+              <span className="flex items-center justify-center space-x-2">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span>Watch Demo</span>
@@ -86,54 +95,54 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Stats Section */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-in-up animation-delay-1000">
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">10K+</div>
-              <div className="text-gray-600 text-sm">Lives Protected</div>
+          {/* Mobile-Optimized Stats Section */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 animate-fade-in-up animation-delay-1000 px-4">
+            <div className="text-center group hover:scale-105 active:scale-95 transition-transform duration-300 p-3 sm:p-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-1 sm:mb-2">10K+</div>
+              <div className="text-gray-600 text-xs sm:text-sm">Lives Protected</div>
             </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-cyan-600 mb-2">99.9%</div>
-              <div className="text-gray-600 text-sm">Uptime</div>
+            <div className="text-center group hover:scale-105 active:scale-95 transition-transform duration-300 p-3 sm:p-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-600 mb-1 sm:mb-2">99.9%</div>
+              <div className="text-gray-600 text-xs sm:text-sm">Uptime</div>
             </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">24/7</div>
-              <div className="text-gray-600 text-sm">Monitoring</div>
+            <div className="text-center group hover:scale-105 active:scale-95 transition-transform duration-300 p-3 sm:p-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600 mb-1 sm:mb-2">24/7</div>
+              <div className="text-gray-600 text-xs sm:text-sm">Monitoring</div>
             </div>
-            <div className="text-center group hover:scale-105 transition-transform duration-300">
-              <div className="text-3xl md:text-4xl font-bold text-cyan-600 mb-2">50+</div>
-              <div className="text-gray-600 text-sm">Healthcare Partners</div>
+            <div className="text-center group hover:scale-105 active:scale-95 transition-transform duration-300 p-3 sm:p-4 bg-white/20 backdrop-blur-sm rounded-2xl border border-white/30">
+              <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-cyan-600 mb-1 sm:mb-2">50+</div>
+              <div className="text-gray-600 text-xs sm:text-sm">Healthcare Partners</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Key Features Section */}
-      <section className="py-20 relative">
+      {/* Mobile-Optimized Key Features Section */}
+      <section className="py-12 sm:py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-4">
               Key Features
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               Advanced monitoring capabilities designed for comprehensive respiratory care
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* SpO2 Monitoring */}
-            <div className="group relative bg-white/70 backdrop-blur-sm p-8 rounded-3xl border border-white/20 shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {/* Mobile SpO2 Monitoring */}
+            <div className="group relative bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-white/20 shadow-xl hover:shadow-2xl transform hover:scale-105 active:scale-95 transition-all duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-lg">
+                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
+                <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2 sm:mb-3">
                   SpO2 Monitoring
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   Continuous oxygen saturation tracking with real-time alerts for critical levels
                 </p>
               </div>
