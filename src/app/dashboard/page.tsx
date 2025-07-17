@@ -155,9 +155,9 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
       {/* Top Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white/90 backdrop-blur-md shadow-lg border-b border-blue-100 sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-4">
           {/* Left side */}
           <div className="flex items-center space-x-4">
@@ -181,9 +181,9 @@ export default function Dashboard() {
           {/* Right side */}
           <div className="flex items-center space-x-4">
             {/* Status indicator */}
-            <div className="hidden sm:flex items-center space-x-2 bg-green-50 px-3 py-1 rounded-full">
+            <div className="hidden sm:flex items-center space-x-2 bg-gradient-to-r from-green-50 to-emerald-50 px-4 py-2 rounded-full border border-green-200">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span className="text-green-700 text-sm font-medium">Online</span>
+              <span className="text-green-700 text-sm font-medium">System Online</span>
             </div>
 
             {/* User profile */}
@@ -204,12 +204,12 @@ export default function Dashboard() {
 
       <div className="flex">
         {/* Sidebar Navigation */}
-        <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-64 bg-white shadow-lg border-r border-gray-200 transition-transform duration-300 ease-in-out`}>
+        <aside className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-white via-blue-50/30 to-cyan-50/30 backdrop-blur-md shadow-xl border-r border-blue-200 transition-transform duration-300 ease-in-out`}>
           <div className="flex flex-col h-full">
             {/* Navigation Header */}
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-800">Navigation</h2>
-              <p className="text-sm text-gray-500 mt-1">Manage your health data</p>
+            <div className="p-6 border-b border-blue-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+              <h2 className="text-lg font-semibold text-gray-800">Health Dashboard</h2>
+              <p className="text-sm text-blue-600 mt-1">Monitor your wellness</p>
             </div>
 
             {/* Navigation Items */}
@@ -223,8 +223,8 @@ export default function Dashboard() {
                   }}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     activeTab === item.id
-                      ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-800'
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg transform scale-105'
+                      : 'text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:text-blue-700 hover:shadow-md'
                   }`}
                 >
                   <span className="text-xl">{item.icon}</span>
@@ -237,8 +237,8 @@ export default function Dashboard() {
             </nav>
 
             {/* Emergency Button */}
-            <div className="p-4 border-t border-gray-200">
-              <button className="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-xl font-medium transition-colors flex items-center justify-center space-x-2">
+            <div className="p-4 border-t border-blue-200 bg-gradient-to-r from-red-50 to-pink-50">
+              <button className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-4 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:scale-105">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
@@ -285,11 +285,11 @@ export default function Dashboard() {
           {activeTab === 'overview' && (
             <div className="space-y-8">
               {/* Quick Health Status */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-blue-200 p-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4">Health Status</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Overall Status */}
-                  <div className="text-center p-6 bg-green-50 rounded-xl border border-green-200">
+                  <div className="text-center p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl border border-green-200 shadow-md hover:shadow-lg transition-shadow duration-300">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -301,22 +301,22 @@ export default function Dashboard() {
 
                   {/* Key Vitals Summary */}
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <span className="text-gray-600">SpO₂</span>
-                      <span className="font-semibold text-gray-800">{vitals.spo2.value}%</span>
+                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg border border-blue-100">
+                      <span className="text-blue-700">SpO₂</span>
+                      <span className="font-semibold text-blue-800">{vitals.spo2.value}%</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <span className="text-gray-600">Heart Rate</span>
-                      <span className="font-semibold text-gray-800">{vitals.heartRate.value} bpm</span>
+                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-red-50 to-pink-50 rounded-lg border border-red-100">
+                      <span className="text-red-700">Heart Rate</span>
+                      <span className="font-semibold text-red-800">{vitals.heartRate.value} bpm</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                      <span className="text-gray-600">FEV₁</span>
-                      <span className="font-semibold text-gray-800">{vitals.fev1.value}L</span>
+                    <div className="flex items-center justify-between p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
+                      <span className="text-green-700">FEV₁</span>
+                      <span className="font-semibold text-green-800">{vitals.fev1.value}L</span>
                     </div>
                   </div>
 
                   {/* Air Quality Summary */}
-                  <div className="text-center p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+                  <div className="text-center p-6 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-xl border border-yellow-200 shadow-md hover:shadow-lg transition-shadow duration-300">
                     <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <span className="text-2xl">🌫️</span>
                     </div>
@@ -328,7 +328,7 @@ export default function Dashboard() {
               </div>
 
               {/* Recent Alerts */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-blue-200 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-gray-800">Recent Alerts</h2>
                   <button
@@ -354,7 +354,7 @@ export default function Dashboard() {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg border border-blue-200 p-6">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <button className="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors text-center group">
@@ -397,10 +397,10 @@ export default function Dashboard() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* SpO2 Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-blue-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center shadow-md">
                         <span className="text-2xl">🫁</span>
                       </div>
                       <div>
@@ -414,19 +414,19 @@ export default function Dashboard() {
                   </div>
                   <div className="text-3xl font-bold text-gray-800 mb-2">{vitals.spo2.value}%</div>
                   <p className="text-sm text-gray-500">Normal range: 95-100%</p>
-                  <div className="mt-4 bg-gray-100 rounded-full h-2">
+                  <div className="mt-4 bg-gradient-to-r from-gray-100 to-blue-50 rounded-full h-3 shadow-inner">
                     <div
-                      className="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                      className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full transition-all duration-500 shadow-sm"
                       style={{ width: `${vitals.spo2.value}%` }}
                     ></div>
                   </div>
                 </div>
 
                 {/* Heart Rate Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-red-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-red-100 to-pink-100 rounded-xl flex items-center justify-center shadow-md">
                         <span className="text-2xl">❤️</span>
                       </div>
                       <div>
@@ -440,19 +440,19 @@ export default function Dashboard() {
                   </div>
                   <div className="text-3xl font-bold text-gray-800 mb-2">{vitals.heartRate.value} bpm</div>
                   <p className="text-sm text-gray-500">Normal range: 60-100 bpm</p>
-                  <div className="mt-4 bg-gray-100 rounded-full h-2">
+                  <div className="mt-4 bg-gradient-to-r from-gray-100 to-red-50 rounded-full h-3 shadow-inner">
                     <div
-                      className="bg-red-500 h-2 rounded-full transition-all duration-500"
+                      className="bg-gradient-to-r from-red-500 to-pink-500 h-3 rounded-full transition-all duration-500 shadow-sm"
                       style={{ width: `${(vitals.heartRate.value / 120) * 100}%` }}
                     ></div>
                   </div>
                 </div>
 
                 {/* FEV1 Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-green-200 p-6 hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                      <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center shadow-md">
                         <span className="text-2xl">🌬️</span>
                       </div>
                       <div>
@@ -466,9 +466,9 @@ export default function Dashboard() {
                   </div>
                   <div className="text-3xl font-bold text-gray-800 mb-2">{vitals.fev1.value}L</div>
                   <p className="text-sm text-gray-500">Normal range: 3.0-4.5L</p>
-                  <div className="mt-4 bg-gray-100 rounded-full h-2">
+                  <div className="mt-4 bg-gradient-to-r from-gray-100 to-green-50 rounded-full h-3 shadow-inner">
                     <div
-                      className="bg-green-500 h-2 rounded-full transition-all duration-500"
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-500 shadow-sm"
                       style={{ width: `${(vitals.fev1.value / 4.5) * 100}%` }}
                     ></div>
                   </div>
@@ -482,7 +482,7 @@ export default function Dashboard() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* AQI Card */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-yellow-200 p-6 hover:shadow-xl transition-all duration-300">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">Air Quality Index</h3>
                   <div className="flex items-center justify-center mb-6">
                     <div className="relative w-32 h-32">
@@ -517,10 +517,10 @@ export default function Dashboard() {
                 </div>
 
                 {/* Environmental Metrics */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+                <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-cyan-200 p-6 hover:shadow-xl transition-all duration-300">
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">Environmental Data</h3>
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-300">
                       <div className="flex items-center space-x-3">
                         <span className="text-2xl">🌫️</span>
                         <div>
@@ -534,7 +534,7 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-cyan-50 rounded-xl border border-gray-100 hover:shadow-md transition-shadow duration-300">
                       <div className="flex items-center space-x-3">
                         <span className="text-2xl">💨</span>
                         <div>
@@ -569,7 +569,7 @@ export default function Dashboard() {
           {/* Trends Tab */}
           {activeTab === 'trends' && (
             <div className="space-y-6">
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
+              <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-blue-200 p-6 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-lg font-semibold text-gray-800">Health Trends</h3>
                   <div className="flex space-x-2">
@@ -577,10 +577,10 @@ export default function Dashboard() {
                       <button
                         key={trend}
                         onClick={() => setSelectedTrend(trend)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                           selectedTrend === trend
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg transform scale-105'
+                            : 'bg-gradient-to-r from-gray-100 to-blue-50 text-gray-700 hover:from-blue-100 hover:to-cyan-100 hover:shadow-md'
                         }`}
                       >
                         {trend === 'spo2' ? 'SpO₂' : trend === 'fev1' ? 'FEV₁' : 'PM2.5'}
