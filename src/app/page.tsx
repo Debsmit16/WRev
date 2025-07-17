@@ -1,7 +1,11 @@
+'use client';
+
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-white">
       {/* Mobile-Optimized Navigation */}
@@ -16,10 +20,18 @@ export default function Home() {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <Link href="/dashboard" className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300 active:scale-95">
+            <div className="md:hidden flex items-center space-x-3">
+              <Link href="/dashboard" className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-3 py-2 rounded-lg font-medium text-xs hover:shadow-lg transition-all duration-300 active:scale-95">
                 Dashboard
               </Link>
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg hover:bg-blue-50 transition-colors active:scale-95"
+              >
+                <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
             </div>
 
             {/* Desktop Navigation */}
@@ -35,6 +47,80 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md border-b border-white/20 shadow-lg z-40">
+            <div className="px-4 py-4 space-y-3">
+              <Link
+                href="/"
+                className="block text-blue-600 font-medium py-2 px-3 rounded-lg bg-blue-50"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                className="block text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium py-2 px-3 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+              <Link
+                href="/features"
+                className="block text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium py-2 px-3 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Features
+              </Link>
+              <Link
+                href="/how-it-works"
+                className="block text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium py-2 px-3 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                How It Works
+              </Link>
+              <Link
+                href="/pricing"
+                className="block text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium py-2 px-3 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/team"
+                className="block text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium py-2 px-3 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Team
+              </Link>
+              <Link
+                href="/contact"
+                className="block text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium py-2 px-3 rounded-lg"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </Link>
+              <div className="pt-3 border-t border-gray-200">
+                <Link
+                  href="/dashboard"
+                  className="block bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-center py-3 px-4 rounded-xl font-medium hover:shadow-lg transition-all duration-300 active:scale-95"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Go to Dashboard
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Menu Overlay */}
+        {mobileMenuOpen && (
+          <div
+            className="md:hidden fixed inset-0 z-30 bg-black/20 backdrop-blur-sm"
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
+        )}
       </nav>
 
       {/* Mobile-Optimized Hero Section */}
