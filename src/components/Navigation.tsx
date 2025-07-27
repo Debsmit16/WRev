@@ -43,11 +43,11 @@ export default function Navigation() {
             
             {/* Mobile Actions */}
             <div className="md:hidden flex items-center space-x-3">
-              <Link 
-                href="/dashboard" 
+              <Link
+                href="/login"
                 className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-xl font-medium text-sm hover:shadow-lg transition-all duration-300 active:scale-95 hover:from-blue-600 hover:to-cyan-600"
               >
-                Dashboard
+                Login
               </Link>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -83,11 +83,11 @@ export default function Navigation() {
                   {item.label}
                 </Link>
               ))}
-              <Link 
-                href="/dashboard" 
+              <Link
+                href="/login"
                 className="ml-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-6 py-2 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-600 hover:to-cyan-600"
               >
-                Dashboard
+                Login
               </Link>
             </div>
           </div>
@@ -127,16 +127,16 @@ export default function Navigation() {
                 </Link>
               ))}
               
-              {/* Special Dashboard Button */}
+              {/* Special Login Button */}
               <div className="pt-4 border-t border-blue-200 mt-4">
-                <Link 
-                  href="/dashboard" 
+                <Link
+                  href="/login"
                   className="block bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-center py-4 px-6 rounded-xl font-semibold hover:shadow-xl transition-all duration-300 active:scale-95 hover:from-blue-600 hover:to-cyan-600"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <div className="flex items-center justify-center space-x-2">
-                    <span className="text-xl">🏥</span>
-                    <span>Go to Health Dashboard</span>
+                    <span className="text-xl">🔐</span>
+                    <span>Login to WRev</span>
                   </div>
                 </Link>
               </div>

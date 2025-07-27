@@ -5,24 +5,70 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const [selectedUserType, setSelectedUserType] = useState<'patient' | 'admin' | 'doctor' | null>(null);
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  const userTypes = [
+    {
+      id: 'patient' as const,
+      title: 'Patient Login',
+      description: 'Access your health dashboard',
+      icon: '🏥',
+      gradient: 'from-blue-500 to-cyan-500',
+      bgGradient: 'from-blue-50 to-cyan-50',
+      borderColor: 'border-blue-200',
+    },
+    {
+      id: 'doctor' as const,
+      title: 'Doctor Login',
+      description: 'Manage patient care',
+      icon: '👩‍⚕️',
+      gradient: 'from-green-500 to-emerald-500',
+      bgGradient: 'from-green-50 to-emerald-50',
+      borderColor: 'border-green-200',
+    },
+    {
+      id: 'admin' as const,
+      title: 'Admin Login',
+      description: 'System administration',
+      icon: '⚙️',
+      gradient: 'from-purple-500 to-indigo-500',
+      bgGradient: 'from-purple-50 to-indigo-50',
+      borderColor: 'border-purple-200',
+    },
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedUserType) return;
+
     setIsLoading(true);
 
     // Simulate authentication process
-    console.log('Login attempt with email:', email);
+    console.log('Login attempt:', { userType: selectedUserType, email, password });
 
     // TODO: Add real authentication logic here
     // For now, simulate a successful login after 1 second
     setTimeout(() => {
       setIsLoading(false);
-      // Route to dashboard after successful login
-      router.push('/dashboard');
+      // Route to appropriate dashboard based on user type
+      if (selectedUserType === 'patient') {
+        router.push('/dashboard');
+      } else if (selectedUserType === 'doctor') {
+        router.push('/doctor-dashboard');
+      } else if (selectedUserType === 'admin') {
+        router.push('/admin-dashboard');
+      }
     }, 1000);
+  };
+
+  const resetSelection = () => {
+    setSelectedUserType(null);
+    setEmail('');
+    setPassword('');
   };
 
   return (
@@ -34,115 +80,195 @@ export default function Login() {
         <div className="absolute -bottom-8 left-20 w-72 h-72 bg-blue-300/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
       </div>
 
-      {/* Login Card */}
-      <div className="relative w-full max-w-md">
-        <div className="bg-white/80 backdrop-blur-md rounded-3xl p-8 shadow-2xl border border-white/20 animate-fade-in-up">
+      {/* Login Container */}
+      <div className="relative w-full max-w-lg sm:max-w-2xl">
+        <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20 animate-fade-in-up">
           {/* Logo/Brand */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6 sm:mb-8">
             <Link href="/" className="inline-block">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
                 WRev
               </h1>
             </Link>
             <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto"></div>
           </div>
 
-          {/* Heading */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              Welcome to WRev
-            </h2>
-            <p className="text-gray-600">
-              Log in to access your health dashboard
-            </p>
-          </div>
-
-          {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Email Input */}
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <div className="relative">
-                <input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400"
-                  required
-                />
-                <div className="absolute inset-y-0 right-0 flex items-center pr-4">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                  </svg>
-                </div>
+          {!selectedUserType ? (
+            <>
+              {/* User Type Selection */}
+              <div className="text-center mb-6 sm:mb-8">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
+                  Welcome to WRev
+                </h2>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Choose your login type to continue
+                </p>
               </div>
-            </div>
 
-            {/* Continue Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-3 px-6 rounded-2xl font-semibold text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300 focus:ring-4 focus:ring-blue-500/20 focus:outline-none group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-            >
-              <span className="flex items-center justify-center space-x-2">
-                {isLoading ? (
-                  <>
-                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              {/* User Type Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+                {userTypes.map((userType) => (
+                  <button
+                    key={userType.id}
+                    onClick={() => setSelectedUserType(userType.id)}
+                    className={`group relative p-4 sm:p-6 bg-gradient-to-br ${userType.bgGradient} border-2 ${userType.borderColor} rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95`}
+                  >
+                    <div className="text-center">
+                      <div className="text-3xl sm:text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                        {userType.icon}
+                      </div>
+                      <h3 className="font-bold text-gray-800 text-sm sm:text-base mb-1">
+                        {userType.title}
+                      </h3>
+                      <p className="text-gray-600 text-xs sm:text-sm">
+                        {userType.description}
+                      </p>
+                    </div>
+                    <div className={`absolute inset-0 bg-gradient-to-r ${userType.gradient} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`}></div>
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Selected User Type Header */}
+              <div className="text-center mb-6 sm:mb-8">
+                <div className="inline-flex items-center space-x-3 mb-4">
+                  <button
+                    onClick={resetSelection}
+                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span>Signing in...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Continue</span>
-                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </>
-                )}
-              </span>
-            </button>
-          </form>
+                  </button>
+                  <div className="text-center">
+                    <div className="text-2xl sm:text-3xl mb-1">
+                      {userTypes.find(type => type.id === selectedUserType)?.icon}
+                    </div>
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+                      {userTypes.find(type => type.id === selectedUserType)?.title}
+                    </h2>
+                  </div>
+                </div>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Enter your credentials to continue
+                </p>
+              </div>
+
+              {/* Login Form */}
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                {/* Email Input */}
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email address
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-sm sm:text-base"
+                      required
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Password Input */}
+                <div className="space-y-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-sm sm:text-base"
+                      required
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                      <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Login Button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className={`w-full bg-gradient-to-r ${userTypes.find(type => type.id === selectedUserType)?.gradient} text-white py-3 px-6 rounded-2xl font-semibold text-sm sm:text-lg hover:shadow-2xl hover:scale-105 transform transition-all duration-300 focus:ring-4 focus:ring-blue-500/20 focus:outline-none group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 active:scale-95`}
+                >
+                  <span className="flex items-center justify-center space-x-2">
+                    {isLoading ? (
+                      <>
+                        <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Signing in...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Sign In</span>
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </>
+                    )}
+                  </span>
+                </button>
+              </form>
+            </>
+          )}
 
           {/* Additional Options */}
-          <div className="mt-8 text-center space-y-4">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
+          {!selectedUserType && (
+            <div className="mt-6 sm:mt-8 text-center space-y-4">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white/80 text-gray-500">or</span>
+                </div>
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white/80 text-gray-500">or</span>
-              </div>
-            </div>
 
-            {/* Demo Access */}
-            <button
-              type="button"
-              onClick={() => router.push('/dashboard')}
-              className="w-full bg-white/50 border border-gray-200 text-gray-700 py-3 px-6 rounded-2xl font-medium hover:bg-white/70 hover:border-gray-300 transition-all duration-300 focus:ring-4 focus:ring-gray-500/20 focus:outline-none"
-            >
-              <span className="flex items-center justify-center space-x-2">
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                <span>View Demo Dashboard</span>
-              </span>
-            </button>
-          </div>
+              {/* Demo Access */}
+              <button
+                type="button"
+                onClick={() => router.push('/dashboard')}
+                className="w-full bg-white/50 border border-gray-200 text-gray-700 py-3 px-6 rounded-2xl font-medium hover:bg-white/70 hover:border-gray-300 transition-all duration-300 focus:ring-4 focus:ring-gray-500/20 focus:outline-none active:scale-95"
+              >
+                <span className="flex items-center justify-center space-x-2">
+                  <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span className="text-sm sm:text-base">View Demo Dashboard</span>
+                </span>
+              </button>
+            </div>
+          )}
 
           {/* Footer Links */}
-          <div className="mt-8 text-center text-sm text-gray-500 space-y-2">
+          <div className="mt-6 sm:mt-8 text-center text-xs sm:text-sm text-gray-500 space-y-2">
             <p>
               Don&apos;t have an account?{' '}
-              <a href="#" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+              <Link href="/contact" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
                 Contact us for access
-              </a>
+              </Link>
             </p>
             <div className="flex justify-center space-x-4">
               <Link href="/privacy" className="hover:text-blue-600 transition-colors">
