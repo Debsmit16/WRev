@@ -1,6 +1,6 @@
 # WRev - Respiratory Health Protection System
 
-A modern, responsive web application for respiratory health monitoring built with Next.js and Tailwind CSS.
+A modern, responsive web application for respiratory health monitoring built with Next.js, Tailwind CSS, and Supabase authentication.
 
 ## 🌟 Features
 
