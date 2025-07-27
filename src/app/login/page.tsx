@@ -63,7 +63,7 @@ export default function Login() {
         // Successful login - redirect to dashboard
         router.push('/dashboard');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
       setIsLoading(false);
     }

@@ -109,9 +109,11 @@ export default function Team() {
                   <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 p-1">
                     <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                       {/* Try to load image first */}
-                      <img
+                      <Image
                         src={member.image}
                         alt={member.name}
+                        width={128}
+                        height={128}
                         className="w-full h-full object-cover rounded-full"
                         onLoad={(e) => {
                           // Image loaded successfully, hide fallback

@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 export default function TestImage() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -9,9 +11,11 @@ export default function TestImage() {
         <div className="space-y-4">
           <div>
             <h2 className="text-lg font-semibold mb-2">Direct Image Test:</h2>
-            <img 
-              src="/team/debsmit-ghosh.jpg" 
+            <Image
+              src="/team/debsmit-ghosh.jpg"
               alt="Debsmit Ghosh"
+              width={128}
+              height={128}
               className="w-32 h-32 object-cover rounded-full border-4 border-blue-500"
               onLoad={() => console.log('Image loaded successfully!')}
               onError={(e) => {

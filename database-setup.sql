@@ -1,8 +1,7 @@
 -- WRev Healthcare Database Setup
 -- Run this in your Supabase SQL Editor
 
--- Enable Row Level Security
-ALTER TABLE auth.users ENABLE ROW LEVEL SECURITY;
+-- Note: auth.users table is managed by Supabase and already has RLS enabled
 
 -- Create patients table
 CREATE TABLE patients (
