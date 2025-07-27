@@ -3,13 +3,16 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Login() {
   const [selectedUserType, setSelectedUserType] = useState<'patient' | 'admin' | 'doctor' | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
+  const { signIn } = useAuth();
 
   const userTypes = [
     {
@@ -24,45 +27,46 @@ export default function Login() {
     {
       id: 'doctor' as const,
       title: 'Doctor Login',
-      description: 'Manage patient care',
+      description: 'Coming soon',
       icon: '👩‍⚕️',
-      gradient: 'from-green-500 to-emerald-500',
-      bgGradient: 'from-green-50 to-emerald-50',
-      borderColor: 'border-green-200',
+      gradient: 'from-gray-400 to-gray-500',
+      bgGradient: 'from-gray-50 to-gray-100',
+      borderColor: 'border-gray-200',
+      disabled: true,
     },
     {
       id: 'admin' as const,
       title: 'Admin Login',
-      description: 'System administration',
+      description: 'Coming soon',
       icon: '⚙️',
-      gradient: 'from-purple-500 to-indigo-500',
-      bgGradient: 'from-purple-50 to-indigo-50',
-      borderColor: 'border-purple-200',
+      gradient: 'from-gray-400 to-gray-500',
+      bgGradient: 'from-gray-50 to-gray-100',
+      borderColor: 'border-gray-200',
+      disabled: true,
     },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedUserType) return;
+    if (!selectedUserType || selectedUserType !== 'patient') return;
 
     setIsLoading(true);
+    setError('');
 
-    // Simulate authentication process
-    console.log('Login attempt:', { userType: selectedUserType, email, password });
+    try {
+      const { error } = await signIn(email, password);
 
-    // TODO: Add real authentication logic here
-    // For now, simulate a successful login after 1 second
-    setTimeout(() => {
-      setIsLoading(false);
-      // Route to appropriate dashboard based on user type
-      if (selectedUserType === 'patient') {
+      if (error) {
+        setError(error.message);
+        setIsLoading(false);
+      } else {
+        // Successful login - redirect to dashboard
         router.push('/dashboard');
-      } else if (selectedUserType === 'doctor') {
-        router.push('/doctor-dashboard');
-      } else if (selectedUserType === 'admin') {
-        router.push('/admin-dashboard');
       }
-    }, 1000);
+    } catch (err) {
+      setError('An unexpected error occurred');
+      setIsLoading(false);
+    }
   };
 
   const resetSelection = () => {
@@ -110,8 +114,13 @@ export default function Login() {
                 {userTypes.map((userType) => (
                   <button
                     key={userType.id}
-                    onClick={() => setSelectedUserType(userType.id)}
-                    className={`group relative p-4 sm:p-6 bg-gradient-to-br ${userType.bgGradient} border-2 ${userType.borderColor} rounded-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95`}
+                    onClick={() => !userType.disabled && setSelectedUserType(userType.id)}
+                    disabled={userType.disabled}
+                    className={`group relative p-4 sm:p-6 bg-gradient-to-br ${userType.bgGradient} border-2 ${userType.borderColor} rounded-2xl transition-all duration-300 ${
+                      userType.disabled
+                        ? 'opacity-50 cursor-not-allowed'
+                        : 'hover:shadow-xl hover:scale-105 active:scale-95'
+                    }`}
                   >
                     <div className="text-center">
                       <div className="text-3xl sm:text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
@@ -155,6 +164,13 @@ export default function Login() {
                   Enter your credentials to continue
                 </p>
               </div>
+
+              {/* Error Message */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                  {error}
+                </div>
+              )}
 
               {/* Login Form */}
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">

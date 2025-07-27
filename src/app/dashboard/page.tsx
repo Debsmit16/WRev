@@ -2,19 +2,31 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import ProfileForm from '@/components/ProfileForm';
 
 export default function Dashboard() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
+  );
+}
+
+function DashboardContent() {
   // Navigation state
   const [activeTab, setActiveTab] = useState('overview');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user: authUser, signOut } = useAuth();
 
-  // Mock user data - in real app this would come from authentication
-  const [user] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    deviceId: 'WRV-2024-001',
-    location: 'New York, NY'
-  });
+  // User data from authentication
+  const user = {
+    name: authUser?.user_metadata?.full_name || authUser?.email || 'Patient',
+    email: authUser?.email || '',
+    deviceId: 'WRV-2024-001', // This will come from database later
+    location: 'New York, NY' // This will come from database later
+  };
 
   // Mock vitals data with real-time simulation
   const [vitals, setVitals] = useState({
@@ -151,6 +163,7 @@ export default function Dashboard() {
     { id: 'trends', name: 'Trends', icon: '📈', description: 'Historical data' },
     { id: 'alerts', name: 'Alerts', icon: '🚨', description: 'Health notifications' },
     { id: 'reports', name: 'Reports', icon: '📋', description: 'Medical reports' },
+    { id: 'profile', name: 'Profile', icon: '👤', description: 'Personal information' },
     { id: 'settings', name: 'Settings', icon: '⚙️', description: 'Preferences' }
   ];
 
@@ -200,9 +213,18 @@ export default function Dashboard() {
               </div>
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center shadow-md">
                 <span className="text-white font-semibold text-xs sm:text-sm">
-                  {user.name.split(' ').map(n => n[0]).join('')}
+                  {user.name.split(' ').map((n: string) => n[0]).join('')}
                 </span>
               </div>
+              <button
+                onClick={signOut}
+                className="ml-2 p-2 text-gray-500 hover:text-red-500 transition-colors"
+                title="Logout"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -439,8 +461,8 @@ export default function Dashboard() {
                       {vitals.spo2.status}
                     </span>
                   </div>
-                  <div className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">{vitals.spo2.value}%</div>
-                  <p className="text-xs sm:text-sm text-gray-500">Normal: 95-100%</p>
+                  <div className="text-2xl sm:text-3xl font-bold text-gray-400 mb-2">---%</div>
+                  <p className="text-xs sm:text-sm text-gray-500">Waiting for device data...</p>
                   <div className="mt-3 sm:mt-4 bg-gradient-to-r from-gray-100 to-blue-50 rounded-full h-2 sm:h-3 shadow-inner">
                     <div
                       className="bg-gradient-to-r from-blue-500 to-cyan-500 h-2 sm:h-3 rounded-full transition-all duration-500 shadow-sm"
@@ -465,8 +487,8 @@ export default function Dashboard() {
                       {vitals.heartRate.status}
                     </span>
                   </div>
-                  <div className="text-3xl font-bold text-gray-800 mb-2">{vitals.heartRate.value} bpm</div>
-                  <p className="text-sm text-gray-500">Normal range: 60-100 bpm</p>
+                  <div className="text-3xl font-bold text-gray-400 mb-2">--- bpm</div>
+                  <p className="text-sm text-gray-500">Waiting for device data...</p>
                   <div className="mt-4 bg-gradient-to-r from-gray-100 to-red-50 rounded-full h-3 shadow-inner">
                     <div
                       className="bg-gradient-to-r from-red-500 to-pink-500 h-3 rounded-full transition-all duration-500 shadow-sm"
@@ -702,6 +724,13 @@ export default function Dashboard() {
                   </button>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* Profile Tab */}
+          {activeTab === 'profile' && (
+            <div className="space-y-6">
+              <ProfileForm />
             </div>
           )}
 
