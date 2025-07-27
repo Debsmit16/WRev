@@ -9,10 +9,21 @@ export default function Login() {
   const [selectedUserType, setSelectedUserType] = useState<'patient' | 'admin' | 'doctor' | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
-  const { signIn } = useAuth();
+  const { signIn, signUp } = useAuth();
+
+  const resetSelection = () => {
+    setSelectedUserType(null);
+    setIsSignUp(false);
+    setEmail('');
+    setPassword('');
+    setFullName('');
+    setError('');
+  };
 
   const userTypes = [
     {
@@ -54,25 +65,39 @@ export default function Login() {
     setError('');
 
     try {
-      const { error } = await signIn(email, password);
+      if (isSignUp) {
+        // Sign up new user
+        if (!fullName.trim()) {
+          setError('Please enter your full name');
+          setIsLoading(false);
+          return;
+        }
 
-      if (error) {
-        setError(error.message);
-        setIsLoading(false);
+        const { error } = await signUp(email, password, fullName);
+
+        if (error) {
+          setError(error.message);
+          setIsLoading(false);
+        } else {
+          // Successful signup - redirect to dashboard
+          router.push('/dashboard');
+        }
       } else {
-        // Successful login - redirect to dashboard
-        router.push('/dashboard');
+        // Sign in existing user
+        const { error } = await signIn(email, password);
+
+        if (error) {
+          setError(error.message);
+          setIsLoading(false);
+        } else {
+          // Successful login - redirect to dashboard
+          router.push('/dashboard');
+        }
       }
     } catch {
       setError('An unexpected error occurred');
       setIsLoading(false);
     }
-  };
-
-  const resetSelection = () => {
-    setSelectedUserType(null);
-    setEmail('');
-    setPassword('');
   };
 
   return (
@@ -156,12 +181,15 @@ export default function Login() {
                       {userTypes.find(type => type.id === selectedUserType)?.icon}
                     </div>
                     <h2 className="text-lg sm:text-xl font-bold text-gray-800">
-                      {userTypes.find(type => type.id === selectedUserType)?.title}
+                      {isSignUp ? 'Create Patient Account' : userTypes.find(type => type.id === selectedUserType)?.title}
                     </h2>
                   </div>
                 </div>
                 <p className="text-gray-600 text-sm sm:text-base">
-                  Enter your credentials to continue
+                  {isSignUp
+                    ? 'Create your account to start monitoring your health'
+                    : 'Enter your credentials to continue'
+                  }
                 </p>
               </div>
 
@@ -172,8 +200,33 @@ export default function Login() {
                 </div>
               )}
 
-              {/* Login Form */}
+              {/* Login/Signup Form */}
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                {/* Full Name Input (only for signup) */}
+                {isSignUp && (
+                  <div className="space-y-2">
+                    <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
+                      Full Name
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="fullName"
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="Enter your full name"
+                        className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-sm sm:text-base"
+                        required
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Email Input */}
                 <div className="space-y-2">
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -220,7 +273,7 @@ export default function Login() {
                   </div>
                 </div>
 
-                {/* Login Button */}
+                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -233,11 +286,11 @@ export default function Login() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span>Signing in...</span>
+                        <span>{isSignUp ? 'Creating Account...' : 'Signing in...'}</span>
                       </>
                     ) : (
                       <>
-                        <span>Sign In</span>
+                        <span>{isSignUp ? 'Create Account' : 'Sign In'}</span>
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
@@ -245,6 +298,24 @@ export default function Login() {
                     )}
                   </span>
                 </button>
+
+                {/* Toggle between Login and Signup */}
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSignUp(!isSignUp);
+                      setError('');
+                      setFullName('');
+                    }}
+                    className="text-blue-600 hover:text-blue-700 font-medium transition-colors text-sm"
+                  >
+                    {isSignUp
+                      ? 'Already have an account? Sign in'
+                      : "Don't have an account? Create one"
+                    }
+                  </button>
+                </div>
               </form>
             </>
           )}
