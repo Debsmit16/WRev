@@ -47,10 +47,18 @@ function AdminDashboardContent() {
   });
   const [loading, setLoading] = useState(true);
 
-  // Redirect if not admin
+  // Redirect if not admin - but give more time for auth to load
   useEffect(() => {
-    if (!loading && (!adminUser || !['admin', 'super_admin', 'moderator'].includes(userRole || ''))) {
-      router.push('/login');
+    console.log('Admin auth check:', { loading, adminUser: !!adminUser, userRole });
+
+    if (!loading && !adminUser) {
+      // Give a bit more time for auth context to update
+      const timeout = setTimeout(() => {
+        console.log('Auth timeout - redirecting to login');
+        router.push('/login');
+      }, 2000); // 2 second delay
+
+      return () => clearTimeout(timeout);
     }
   }, [adminUser, userRole, loading, router]);
 
