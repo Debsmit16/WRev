@@ -93,17 +93,54 @@ export default function Login() {
         } else {
           // Check if admin login and verify admin status
           if (selectedUserType === 'admin') {
+            console.log('Admin login detected, checking session...');
+
             // Get the current session to get user ID
             const { data: { session } } = await supabase.auth.getSession();
+            console.log('Session data:', session?.user?.id, session?.user?.email);
+
             if (session?.user) {
-              const adminStatus = await checkAdminStatus(session.user.id);
-              if (!adminStatus) {
-                setError('Access denied. Admin privileges required.');
-                setIsLoading(false);
-                return;
+              console.log('Calling checkAdminStatus with user ID:', session.user.id);
+
+              // Try direct database query first
+              try {
+                const { data: adminData, error: adminError } = await supabase
+                  .from('admin_users')
+                  .select('*')
+                  .eq('id', session.user.id)
+                  .eq('is_active', true)
+                  .single();
+
+                console.log('Direct admin query result:', adminData, 'Error:', adminError);
+
+                if (adminError || !adminData) {
+                  console.error('Direct admin check failed:', adminError);
+                  setError('Access denied. Admin privileges required.');
+                  setIsLoading(false);
+                  return;
+                }
+
+                console.log('Admin verified directly, redirecting to /admin');
+                router.push('/admin');
+              } catch (directError) {
+                console.error('Direct admin query failed:', directError);
+
+                // Fallback to context method
+                const adminStatus = await checkAdminStatus(session.user.id);
+                console.log('Fallback admin status result:', adminStatus);
+
+                if (!adminStatus) {
+                  console.error('Fallback admin check also failed');
+                  setError('Access denied. Admin privileges required.');
+                  setIsLoading(false);
+                  return;
+                }
+
+                console.log('Admin verified via fallback, redirecting to /admin');
+                router.push('/admin');
               }
-              router.push('/admin');
             } else {
+              console.error('No session found after login');
               setError('Authentication failed. Please try again.');
               setIsLoading(false);
             }
