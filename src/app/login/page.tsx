@@ -120,8 +120,8 @@ export default function Login() {
                   return;
                 }
 
-                console.log('Admin verified directly, redirecting to /admin/simple');
-                router.push('/admin/simple');
+                console.log('Admin verified directly, redirecting to /admin');
+                router.push('/admin');
               } catch (directError) {
                 console.error('Direct admin query failed:', directError);
 
@@ -136,8 +136,8 @@ export default function Login() {
                   return;
                 }
 
-                console.log('Admin verified via fallback, redirecting to /admin/simple');
-                router.push('/admin/simple');
+                console.log('Admin verified via fallback, redirecting to /admin');
+                router.push('/admin');
               }
             } else {
               console.error('No session found after login');

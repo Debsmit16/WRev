@@ -1,10 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import ProtectedRoute from '@/components/ProtectedRoute';
 
 interface Patient {
   id: string;
@@ -27,16 +25,15 @@ interface SystemStats {
 }
 
 export default function AdminDashboard() {
-  return (
-    <ProtectedRoute>
-      <AdminDashboardContent />
-    </ProtectedRoute>
-  );
-}
-
-function AdminDashboardContent() {
-  const { adminUser, userRole, signOut } = useAuth();
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [adminUser, setAdminUser] = useState<{
+    id: string;
+    email: string;
+    full_name: string;
+    role: string;
+    permissions: string[];
+  } | null>(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [patients, setPatients] = useState<Patient[]>([]);
   const [systemStats, setSystemStats] = useState<SystemStats>({
@@ -45,40 +42,59 @@ function AdminDashboardContent() {
     totalVitalsReadings: 0,
     criticalAlerts: 0
   });
-  const [loading, setLoading] = useState(true);
 
-  // Redirect if not admin - but give more time for auth to load
+  // Direct authentication check - no ProtectedRoute wrapper needed
   useEffect(() => {
-    console.log('Admin auth check:', { loading, adminUser: !!adminUser, userRole });
+    checkAdminAndLoadData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (!loading && !adminUser) {
-      // Give a bit more time for auth context to update
-      const timeout = setTimeout(() => {
-        console.log('Auth timeout - redirecting to login');
+  const checkAdminAndLoadData = async () => {
+    try {
+      console.log('Checking admin status...');
+
+      // Get current session
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (sessionError || !session?.user) {
+        console.log('No session found, redirecting to login');
         router.push('/login');
-      }, 2000); // 2 second delay
+        return;
+      }
 
-      return () => clearTimeout(timeout);
-    }
-  }, [adminUser, userRole, loading, router]);
+      console.log('Session found for user:', session.user.email);
 
-  // Load admin data
-  useEffect(() => {
-    if (adminUser) {
-      loadDashboardData();
-    } else if (!loading) {
-      // If no admin user and not loading, stop loading state
+      // Check if user is admin
+      const { data: adminData, error: adminError } = await supabase
+        .from('admin_users')
+        .select('*')
+        .eq('id', session.user.id)
+        .eq('is_active', true)
+        .single();
+
+      if (adminError || !adminData) {
+        console.log('Not an admin user, redirecting to login');
+        router.push('/login');
+        return;
+      }
+
+      console.log('Admin verified:', adminData.email, adminData.role);
+      setAdminUser(adminData);
+
+      // Load dashboard data
+      await loadDashboardData();
+
+    } catch (error) {
+      console.error('Error in admin check:', error);
+      router.push('/login');
+    } finally {
       setLoading(false);
     }
+  };
 
-    // Timeout to prevent infinite loading
-    const timeout = setTimeout(() => {
-      console.log('Dashboard loading timeout - forcing load complete');
-      setLoading(false);
-    }, 10000); // 10 second timeout
-
-    return () => clearTimeout(timeout);
-  }, [adminUser, loading]);
+  const signOut = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+  };
 
   const loadDashboardData = async () => {
     console.log('Loading admin dashboard data...');
@@ -127,9 +143,6 @@ function AdminDashboardContent() {
         totalVitalsReadings: 0,
         criticalAlerts: 0
       });
-    } finally {
-      console.log('Setting loading to false');
-      setLoading(false);
     }
   };
 
