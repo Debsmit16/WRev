@@ -14,7 +14,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, checkAdminStatus } = useAuth();
 
   const resetSelection = () => {
     setSelectedUserType(null);
@@ -48,25 +48,25 @@ export default function Login() {
     {
       id: 'admin' as const,
       title: 'Admin Login',
-      description: 'Coming soon',
+      description: 'System administration',
       icon: '⚙️',
-      gradient: 'from-gray-400 to-gray-500',
-      bgGradient: 'from-gray-50 to-gray-100',
-      borderColor: 'border-gray-200',
-      disabled: true,
+      gradient: 'from-purple-500 to-indigo-500',
+      bgGradient: 'from-purple-50 to-indigo-50',
+      borderColor: 'border-purple-200',
+      disabled: false,
     },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedUserType || selectedUserType !== 'patient') return;
+    if (!selectedUserType) return;
 
     setIsLoading(true);
     setError('');
 
     try {
-      if (isSignUp) {
-        // Sign up new user
+      if (isSignUp && selectedUserType === 'patient') {
+        // Sign up new patient
         if (!fullName.trim()) {
           setError('Please enter your full name');
           setIsLoading(false);
@@ -79,19 +79,29 @@ export default function Login() {
           setError(error.message);
           setIsLoading(false);
         } else {
-          // Successful signup - redirect to dashboard
+          // Successful signup - redirect to patient dashboard
           router.push('/dashboard');
         }
       } else {
         // Sign in existing user
-        const { error } = await signIn(email, password);
+        const { error } = await signIn(email, password, selectedUserType === 'admin' ? 'admin' : 'patient');
 
         if (error) {
           setError(error.message);
           setIsLoading(false);
         } else {
-          // Successful login - redirect to dashboard
-          router.push('/dashboard');
+          // Check if admin login and verify admin status
+          if (selectedUserType === 'admin') {
+            const adminStatus = await checkAdminStatus();
+            if (!adminStatus) {
+              setError('Access denied. Admin privileges required.');
+              setIsLoading(false);
+              return;
+            }
+            router.push('/admin');
+          } else {
+            router.push('/dashboard');
+          }
         }
       }
     } catch {
@@ -299,23 +309,25 @@ export default function Login() {
                   </span>
                 </button>
 
-                {/* Toggle between Login and Signup */}
-                <div className="text-center">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsSignUp(!isSignUp);
-                      setError('');
-                      setFullName('');
-                    }}
-                    className="text-blue-600 hover:text-blue-700 font-medium transition-colors text-sm"
-                  >
-                    {isSignUp
-                      ? 'Already have an account? Sign in'
-                      : "Don't have an account? Create one"
-                    }
-                  </button>
-                </div>
+                {/* Toggle between Login and Signup (only for patients) */}
+                {selectedUserType === 'patient' && (
+                  <div className="text-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsSignUp(!isSignUp);
+                        setError('');
+                        setFullName('');
+                      }}
+                      className="text-blue-600 hover:text-blue-700 font-medium transition-colors text-sm"
+                    >
+                      {isSignUp
+                        ? 'Already have an account? Sign in'
+                        : "Don't have an account? Create one"
+                      }
+                    </button>
+                  </div>
+                )}
               </form>
             </>
           )}

@@ -89,6 +89,12 @@ export default function Navigation() {
               >
                 Login
               </Link>
+              <Link
+                href="/admin"
+                className="ml-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-purple-600 hover:to-indigo-600 text-sm"
+              >
+                Admin
+              </Link>
             </div>
           </div>
         </div>
