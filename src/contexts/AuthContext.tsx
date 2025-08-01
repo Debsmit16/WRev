@@ -24,7 +24,7 @@ interface AuthContextType {
   signIn: (email: string, password: string, userType?: 'patient' | 'admin') => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
-  checkAdminStatus: () => Promise<AdminUser | null>;
+  checkAdminStatus: (userId?: string) => Promise<AdminUser | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,18 +35,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const checkAdminStatus = async (): Promise<AdminUser | null> => {
-    if (!user) return null;
+  const checkAdminStatus = async (userId?: string): Promise<AdminUser | null> => {
+    const targetUserId = userId || user?.id;
+    if (!targetUserId) {
+      console.log('checkAdminStatus: No user ID available');
+      return null;
+    }
+
+    console.log('checkAdminStatus: Checking admin status for user:', targetUserId);
 
     try {
       const { data, error } = await supabase
         .from('admin_users')
         .select('*')
-        .eq('id', user.id)
+        .eq('id', targetUserId)
         .eq('is_active', true)
         .single();
 
-      if (error || !data) return null;
+      if (error) {
+        console.error('checkAdminStatus: Database error:', error);
+        return null;
+      }
+
+      if (!data) {
+        console.log('checkAdminStatus: No admin record found for user:', targetUserId);
+        return null;
+      }
+
+      console.log('checkAdminStatus: Admin found:', data.email, 'Role:', data.role);
 
       return {
         id: data.id,
@@ -58,7 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         last_login: data.last_login
       };
     } catch (error) {
-      console.error('Error checking admin status:', error);
+      console.error('checkAdminStatus: Unexpected error:', error);
       return null;
     }
   };

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 export default function Login() {
   const [selectedUserType, setSelectedUserType] = useState<'patient' | 'admin' | 'doctor' | null>(null);
@@ -92,13 +93,20 @@ export default function Login() {
         } else {
           // Check if admin login and verify admin status
           if (selectedUserType === 'admin') {
-            const adminStatus = await checkAdminStatus();
-            if (!adminStatus) {
-              setError('Access denied. Admin privileges required.');
+            // Get the current session to get user ID
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session?.user) {
+              const adminStatus = await checkAdminStatus(session.user.id);
+              if (!adminStatus) {
+                setError('Access denied. Admin privileges required.');
+                setIsLoading(false);
+                return;
+              }
+              router.push('/admin');
+            } else {
+              setError('Authentication failed. Please try again.');
               setIsLoading(false);
-              return;
             }
-            router.push('/admin');
           } else {
             router.push('/dashboard');
           }
