@@ -1,8 +1,8 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { isSupabaseConfigured, supabase, supabaseConfigErrorMessage } from '@/lib/supabase';
 
 export type UserRole = 'patient' | 'admin' | 'super_admin' | 'moderator';
 
@@ -21,7 +21,8 @@ interface AuthContextType {
   adminUser: AdminUser | null;
   userRole: UserRole | null;
   loading: boolean;
-  signIn: (email: string, password: string, userType?: 'patient' | 'admin') => Promise<{ error: Error | null }>;
+  signIn: (email: string, password: string, userType?: 'patient' | 'admin' | 'doctor') => Promise<{ error: Error | null }>;
+  signInWithGoogle: (userType?: 'patient' | 'admin' | 'doctor') => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   checkAdminStatus: (userId?: string) => Promise<AdminUser | null>;
@@ -29,13 +30,31 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const toFriendlyAuthError = (error: unknown): Error => {
+  const message = error instanceof Error ? error.message : String(error);
+
+  if (/failed to fetch|networkerror|network request failed/i.test(message)) {
+    return new Error('Unable to reach authentication service. Check internet connection and Supabase project configuration.');
+  }
+
+  return error instanceof Error ? error : new Error('Authentication request failed. Please try again.');
+};
+
+const normalizeAuthError = (error: Error | null): Error | null => {
+  if (!error) {
+    return null;
+  }
+
+  return toFriendlyAuthError(error);
+};
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const checkAdminStatus = async (userId?: string): Promise<AdminUser | null> => {
+  const checkAdminStatus = useCallback(async (userId?: string): Promise<AdminUser | null> => {
     const targetUserId = userId || user?.id;
     if (!targetUserId) {
       console.log('checkAdminStatus: No user ID available');
@@ -77,10 +96,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('checkAdminStatus: Unexpected error:', error);
       return null;
     }
-  };
+  }, [user?.id]);
 
-  const updateUserRole = async () => {
-    const admin = await checkAdminStatus();
+  const updateUserRole = useCallback(async (userId?: string) => {
+    const admin = await checkAdminStatus(userId);
     if (admin) {
       setAdminUser(admin);
       setUserRole(admin.role);
@@ -88,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setAdminUser(null);
       setUserRole('patient');
     }
-  };
+  }, [checkAdminStatus]);
 
   useEffect(() => {
     // Get initial session
@@ -98,7 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(currentUser);
 
       if (currentUser) {
-        await updateUserRole();
+        await updateUserRole(currentUser.id);
       }
 
       setLoading(false);
@@ -113,7 +132,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(currentUser);
 
         if (currentUser) {
-          await updateUserRole();
+          await updateUserRole(currentUser.id);
         } else {
           setAdminUser(null);
           setUserRole(null);
@@ -124,41 +143,83 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [updateUserRole]);
 
-  const signIn = async (email: string, password: string, userType: 'patient' | 'admin' = 'patient') => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (!error && userType === 'admin') {
-      // Log admin session
-      try {
-        await supabase.from('admin_sessions').insert({
-          admin_id: user?.id,
-          ip_address: 'unknown', // You can get this from request headers in production
-          user_agent: navigator.userAgent
-        });
-      } catch (sessionError) {
-        console.error('Error logging admin session:', sessionError);
-      }
+  const signIn = async (email: string, password: string, userType: 'patient' | 'admin' | 'doctor' = 'patient') => {
+    if (!isSupabaseConfigured) {
+      return { error: new Error(supabaseConfigErrorMessage) };
     }
 
-    return { error };
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (!error && userType === 'admin' && data.user?.id) {
+        // Log admin session
+        try {
+          await supabase.from('admin_sessions').insert({
+            admin_id: data.user.id,
+            ip_address: 'unknown', // You can get this from request headers in production
+            user_agent: navigator.userAgent
+          });
+        } catch (sessionError) {
+          console.error('Error logging admin session:', sessionError);
+        }
+      }
+
+      return { error: normalizeAuthError(error) };
+    } catch (error) {
+      return { error: toFriendlyAuthError(error) };
+    }
+  };
+
+  const signInWithGoogle = async (userType: 'patient' | 'admin' | 'doctor' = 'patient') => {
+    if (!isSupabaseConfigured) {
+      return { error: new Error(supabaseConfigErrorMessage) };
+    }
+
+    const intent = userType === 'admin' ? 'admin' : userType === 'doctor' ? 'doctor' : 'patient';
+    const redirectTo = `${window.location.origin}/login?intent=${intent}`;
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+
+      return { error: normalizeAuthError(error) };
+    } catch (error) {
+      return { error: toFriendlyAuthError(error) };
+    }
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
+    if (!isSupabaseConfigured) {
+      return { error: new Error(supabaseConfigErrorMessage) };
+    }
+
+    try {
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
         },
-      },
-    });
-    return { error };
+      });
+      return { error: normalizeAuthError(error) };
+    } catch (error) {
+      return { error: toFriendlyAuthError(error) };
+    }
   };
 
   const signOut = async () => {
@@ -187,6 +248,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     userRole,
     loading,
     signIn,
+    signInWithGoogle,
     signUp,
     signOut,
     checkAdminStatus,

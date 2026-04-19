@@ -160,9 +160,13 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Enter your email"
+                suppressHydrationWarning
                 className="flex-1 px-4 py-3 rounded-l-xl bg-white/80 backdrop-blur-sm border border-gray-300 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
               />
-              <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-r-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+              <button
+                suppressHydrationWarning
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-r-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+              >
                 Subscribe
               </button>
             </div>

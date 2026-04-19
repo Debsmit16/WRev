@@ -1,0 +1,44 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EAF6FF"/>
+      <stop offset="0.55" stop-color="#F4FBFF"/>
+      <stop offset="1" stop-color="#D1F1FF"/>
+    </linearGradient>
+    <linearGradient id="card" x1="210" y1="150" x2="990" y2="750" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#E0F7FF" stop-opacity="0.84"/>
+    </linearGradient>
+    <linearGradient id="spark" x1="320" y1="230" x2="880" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" rx="48" fill="url(#bg)"/>
+  <circle cx="220" cy="180" r="110" fill="#FFFFFF" fill-opacity="0.5"/>
+  <circle cx="980" cy="710" r="160" fill="#06B6D4" fill-opacity="0.16"/>
+  <rect x="175" y="140" width="850" height="640" rx="42" fill="url(#card)" stroke="#FFFFFF" stroke-opacity="0.8"/>
+  <rect x="250" y="200" width="260" height="500" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <rect x="550" y="200" width="400" height="500" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <rect x="295" y="250" width="170" height="18" rx="9" fill="#D7F0FF"/>
+  <rect x="295" y="286" width="120" height="14" rx="7" fill="#E6F5FF"/>
+  <rect x="295" y="340" width="180" height="28" rx="14" fill="url(#spark)" fill-opacity="0.12"/>
+  <rect x="295" y="388" width="155" height="28" rx="14" fill="#D7F0FF"/>
+  <rect x="295" y="436" width="200" height="28" rx="14" fill="#DCEEFF"/>
+  <rect x="295" y="484" width="138" height="28" rx="14" fill="#E6F5FF"/>
+  <rect x="295" y="560" width="175" height="54" rx="18" fill="#2563EB" fill-opacity="0.92"/>
+  <path d="M330 587L358 559L384 577L423 543" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="610" y="250" width="300" height="34" rx="17" fill="#D7F0FF"/>
+  <rect x="610" y="308" width="250" height="22" rx="11" fill="#E6F5FF"/>
+  <rect x="610" y="352" width="280" height="22" rx="11" fill="#DCEEFF"/>
+  <rect x="610" y="396" width="230" height="22" rx="11" fill="#E6F5FF"/>
+  <rect x="610" y="462" width="320" height="160" rx="26" fill="#FFFFFF" stroke="#D8F1FF" stroke-width="3"/>
+  <path d="M650 582L705 510L760 548L820 474L890 510" stroke="url(#spark)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="650" cy="582" r="10" fill="#2563EB"/>
+  <circle cx="705" cy="510" r="10" fill="#06B6D4"/>
+  <circle cx="760" cy="548" r="10" fill="#2563EB"/>
+  <circle cx="820" cy="474" r="10" fill="#06B6D4"/>
+  <circle cx="890" cy="510" r="10" fill="#2563EB"/>
+  <text x="90" y="820" fill="#0F172A" fill-opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Analysis phase</text>
+</svg>

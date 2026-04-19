@@ -1,13 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabase';
 
+type UserType = 'patient' | 'admin' | 'doctor';
+type ResolvedRole = 'patient' | 'doctor' | 'admin' | 'super_admin' | 'moderator';
+
+const isAdminRole = (role: ResolvedRole | null) => role === 'admin' || role === 'super_admin' || role === 'moderator';
+
 export default function Login() {
-  const [selectedUserType, setSelectedUserType] = useState<'patient' | 'admin' | 'doctor' | null>(null);
+  const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -15,7 +20,125 @@ export default function Login() {
   const [error, setError] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const router = useRouter();
-  const { signIn, signUp, checkAdminStatus } = useAuth();
+  const searchParams = useSearchParams();
+  const { signIn, signInWithGoogle, signUp } = useAuth();
+
+  const loginThrottleKey = 'wrev-login-attempts';
+  const loginThrottleWindowMs = 5 * 60 * 1000;
+  const maxLoginAttempts = 5;
+
+  const getAttemptState = () => {
+    if (typeof window === 'undefined') {
+      return { attempts: 0, blockedUntil: 0 };
+    }
+
+    try {
+      const raw = window.localStorage.getItem(loginThrottleKey);
+      if (!raw) {
+        return { attempts: 0, blockedUntil: 0 };
+      }
+
+      const parsed = JSON.parse(raw) as { attempts?: number; blockedUntil?: number };
+      return {
+        attempts: parsed.attempts || 0,
+        blockedUntil: parsed.blockedUntil || 0,
+      };
+    } catch {
+      return { attempts: 0, blockedUntil: 0 };
+    }
+  };
+
+  const setAttemptState = (attempts: number, blockedUntil = 0) => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem(loginThrottleKey, JSON.stringify({ attempts, blockedUntil }));
+  };
+
+  const isLoginBlocked = () => {
+    const state = getAttemptState();
+    return state.blockedUntil > Date.now();
+  };
+
+  const resolveRole = async (accessToken: string): Promise<ResolvedRole | null> => {
+    const response = await fetch('/api/auth/resolve-role', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json() as { role?: ResolvedRole };
+    return data.role ?? null;
+  };
+
+  const redirectForResolvedRole = useCallback((role: ResolvedRole) => {
+    if (isAdminRole(role)) {
+      router.push('/admin');
+      return;
+    }
+
+    if (role === 'doctor') {
+      router.push('/dashboard');
+      return;
+    }
+
+    router.push('/patient');
+  }, [router]);
+
+  useEffect(() => {
+    const intent = searchParams.get('intent');
+    if (!intent) {
+      return;
+    }
+
+    const completeOAuthLogin = async () => {
+      setIsLoading(true);
+      setError('');
+
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError || !session?.access_token) {
+          setError('Google login failed. Please try again.');
+          setIsLoading(false);
+          return;
+        }
+
+        const role = await resolveRole(session.access_token);
+        if (!role) {
+          setError('Unable to verify account access. Please try again.');
+          setIsLoading(false);
+          return;
+        }
+
+        if (intent === 'admin' && !isAdminRole(role)) {
+          await supabase.auth.signOut();
+          setError('Access denied. Admin privileges required.');
+          setIsLoading(false);
+          router.replace('/login');
+          return;
+        }
+
+        if (intent === 'doctor' && role === 'patient') {
+          router.push('/dashboard');
+          return;
+        }
+
+        redirectForResolvedRole(role);
+      } catch {
+        setError('Google login failed. Please try again.');
+        setIsLoading(false);
+      }
+    };
+
+    void completeOAuthLogin();
+  }, [searchParams, router, redirectForResolvedRole]);
 
   const resetSelection = () => {
     setSelectedUserType(null);
@@ -39,12 +162,12 @@ export default function Login() {
     {
       id: 'doctor' as const,
       title: 'Doctor Login',
-      description: 'Coming soon',
+      description: 'Access care overview dashboard',
       icon: '👩‍⚕️',
-      gradient: 'from-gray-400 to-gray-500',
-      bgGradient: 'from-gray-50 to-gray-100',
-      borderColor: 'border-gray-200',
-      disabled: true,
+      gradient: 'from-emerald-500 to-teal-500',
+      bgGradient: 'from-emerald-50 to-teal-50',
+      borderColor: 'border-emerald-200',
+      disabled: false,
     },
     {
       id: 'admin' as const,
@@ -61,6 +184,13 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedUserType) return;
+
+    if (isLoginBlocked()) {
+      const { blockedUntil } = getAttemptState();
+      const minutesRemaining = Math.max(1, Math.ceil((blockedUntil - Date.now()) / 60000));
+      setError(`Too many login attempts. Try again in ${minutesRemaining} minute(s).`);
+      return;
+    }
 
     setIsLoading(true);
     setError('');
@@ -81,106 +211,112 @@ export default function Login() {
           setIsLoading(false);
         } else {
           // Successful signup - redirect to patient dashboard
-          router.push('/dashboard');
+          router.push('/patient');
         }
       } else {
-        // Sign in existing user
-        const { error } = await signIn(email, password, selectedUserType === 'admin' ? 'admin' : 'patient');
+        const { error } = await signIn(email, password, selectedUserType);
 
         if (error) {
+          const state = getAttemptState();
+          const attempts = state.attempts + 1;
+          const blockedUntil = attempts >= maxLoginAttempts ? Date.now() + loginThrottleWindowMs : 0;
+          setAttemptState(attempts >= maxLoginAttempts ? 0 : attempts, blockedUntil);
           setError(error.message);
           setIsLoading(false);
         } else {
-          // Check if admin login and verify admin status
-          if (selectedUserType === 'admin') {
-            console.log('Admin login detected, checking session...');
+          setAttemptState(0, 0);
+          const { data: { session } } = await supabase.auth.getSession();
 
-            // Get the current session to get user ID
-            const { data: { session } } = await supabase.auth.getSession();
-            console.log('Session data:', session?.user?.id, session?.user?.email);
-
-            if (session?.user) {
-              console.log('Calling checkAdminStatus with user ID:', session.user.id);
-
-              // Try direct database query first
-              try {
-                const { data: adminData, error: adminError } = await supabase
-                  .from('admin_users')
-                  .select('*')
-                  .eq('id', session.user.id)
-                  .eq('is_active', true)
-                  .single();
-
-                console.log('Direct admin query result:', adminData, 'Error:', adminError);
-
-                if (adminError || !adminData) {
-                  console.error('Direct admin check failed:', adminError);
-                  setError('Access denied. Admin privileges required.');
-                  setIsLoading(false);
-                  return;
-                }
-
-                console.log('Admin verified directly, redirecting to /admin');
-                router.push('/admin');
-              } catch (directError) {
-                console.error('Direct admin query failed:', directError);
-
-                // Fallback to context method
-                const adminStatus = await checkAdminStatus(session.user.id);
-                console.log('Fallback admin status result:', adminStatus);
-
-                if (!adminStatus) {
-                  console.error('Fallback admin check also failed');
-                  setError('Access denied. Admin privileges required.');
-                  setIsLoading(false);
-                  return;
-                }
-
-                console.log('Admin verified via fallback, redirecting to /admin');
-                router.push('/admin');
-              }
-            } else {
-              console.error('No session found after login');
-              setError('Authentication failed. Please try again.');
-              setIsLoading(false);
-            }
-          } else {
-            router.push('/dashboard');
+          if (!session?.access_token) {
+            setError('Authentication failed. Please try again.');
+            setIsLoading(false);
+            return;
           }
+
+          const role = await resolveRole(session.access_token);
+
+          if (!role) {
+            setError('Unable to verify account access. Please try again.');
+            setIsLoading(false);
+            return;
+          }
+
+          if (selectedUserType === 'admin' && !isAdminRole(role)) {
+            await supabase.auth.signOut();
+            setError('Access denied. Admin privileges required.');
+            setIsLoading(false);
+            return;
+          }
+
+          if (selectedUserType === 'doctor') {
+            if (isAdminRole(role)) {
+              router.push('/admin');
+              return;
+            }
+
+            router.push('/dashboard');
+            return;
+          }
+
+          redirectForResolvedRole(role);
         }
       }
     } catch {
-      setError('An unexpected error occurred');
+      setError('Authentication service is unreachable. Please check your internet and Supabase settings.');
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    if (!selectedUserType) {
+      return;
+    }
+
+    if (isLoginBlocked()) {
+      const { blockedUntil } = getAttemptState();
+      const minutesRemaining = Math.max(1, Math.ceil((blockedUntil - Date.now()) / 60000));
+      setError(`Too many login attempts. Try again in ${minutesRemaining} minute(s).`);
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    const { error } = await signInWithGoogle(selectedUserType);
+    if (error) {
+      setError(error.message);
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50 flex items-center justify-center p-4">
+    <div className="relative min-h-screen bg-gradient-to-br from-sky-100 via-blue-50 to-cyan-50/80 flex items-center justify-center p-4 overflow-hidden">
       {/* Background Animation */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-blue-200/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
-        <div className="absolute top-20 right-20 w-72 h-72 bg-cyan-200/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float-delayed"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-blue-300/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+        <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] [background-size:42px_42px]"></div>
+        <div className="absolute top-20 left-20 w-72 h-72 rounded-full bg-blue-200/30 blur-3xl opacity-70 animate-float"></div>
+        <div className="absolute top-20 right-20 w-72 h-72 rounded-full bg-cyan-200/30 blur-3xl opacity-70 animate-float-delayed"></div>
+        <div className="absolute -bottom-8 left-20 w-72 h-72 rounded-full bg-blue-300/30 blur-3xl opacity-70 animate-float"></div>
+        <div className="absolute -bottom-12 right-28 w-56 h-56 rounded-full bg-cyan-300/30 blur-3xl opacity-60 animate-float-delayed"></div>
       </div>
 
       {/* Login Container */}
-      <div className="relative w-full max-w-lg sm:max-w-2xl">
-        <div className="bg-white/80 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/20 animate-fade-in-up">
+      <div className="relative w-full max-w-lg sm:max-w-3xl">
+        <div className="card-glow rounded-[2.2rem] p-6 sm:p-8 shadow-2xl border border-white/40 animate-fade-in-up section-sheen">
           {/* Logo/Brand */}
-          <div className="text-center mb-6 sm:mb-8">
+          <div className="text-center mb-6 sm:mb-8 animate-fade-in-down">
             <Link href="/" className="inline-block">
-              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-600 bg-clip-text text-transparent mb-2 animate-gradient">
                 WRev
               </h1>
             </Link>
-            <div className="w-12 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto"></div>
+            <div className="w-14 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto"></div>
           </div>
 
           {!selectedUserType ? (
             <>
               {/* User Type Selection */}
-              <div className="text-center mb-6 sm:mb-8">
+              <div className="text-center mb-6 sm:mb-8 animate-fade-in-down animation-delay-200">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
                   Welcome to WRev
                 </h2>
@@ -190,16 +326,17 @@ export default function Login() {
               </div>
 
               {/* User Type Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+              <div className="mb-6 overflow-x-auto pb-2 sm:overflow-visible">
+                <div className="flex min-w-max snap-x snap-mandatory gap-4 sm:grid sm:min-w-0 sm:grid-cols-3 sm:gap-6">
                 {userTypes.map((userType) => (
                   <button
                     key={userType.id}
                     onClick={() => !userType.disabled && setSelectedUserType(userType.id)}
                     disabled={userType.disabled}
-                    className={`group relative p-4 sm:p-6 bg-gradient-to-br ${userType.bgGradient} border-2 ${userType.borderColor} rounded-2xl transition-all duration-300 ${
+                    className={`group relative min-w-[220px] sm:min-w-0 snap-start p-4 sm:p-6 bg-gradient-to-br ${userType.bgGradient} border-2 ${userType.borderColor} rounded-2xl transition-all duration-300 ${
                       userType.disabled
                         ? 'opacity-50 cursor-not-allowed'
-                        : 'hover:shadow-xl hover:scale-105 active:scale-95'
+                        : 'hover:shadow-xl hover:scale-[1.03] active:scale-95'
                     }`}
                   >
                     <div className="text-center">
@@ -216,12 +353,13 @@ export default function Login() {
                     <div className={`absolute inset-0 bg-gradient-to-r ${userType.gradient} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`}></div>
                   </button>
                 ))}
+                </div>
               </div>
             </>
           ) : (
             <>
               {/* Selected User Type Header */}
-              <div className="text-center mb-6 sm:mb-8">
+              <div className="text-center mb-6 sm:mb-8 animate-fade-in-down animation-delay-200">
                 <div className="inline-flex items-center space-x-3 mb-4">
                   <button
                     onClick={resetSelection}
@@ -250,13 +388,13 @@ export default function Login() {
 
               {/* Error Message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                <div className="bg-red-50/90 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm backdrop-blur-sm animate-fade-in-down">
                   {error}
                 </div>
               )}
 
               {/* Login/Signup Form */}
-              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 animate-fade-in-up animation-delay-200">
                 {/* Full Name Input (only for signup) */}
                 {isSignUp && (
                   <div className="space-y-2">
@@ -270,7 +408,7 @@ export default function Login() {
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
                         placeholder="Enter your full name"
-                        className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-sm sm:text-base"
+                        className="w-full px-4 py-3 bg-white/65 border border-white/70 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-gray-900 caret-gray-900 text-sm sm:text-base backdrop-blur-sm"
                         required
                       />
                       <div className="absolute inset-y-0 right-0 flex items-center pr-4">
@@ -294,7 +432,8 @@ export default function Login() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
-                      className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-sm sm:text-base"
+                      autoComplete="off"
+                      className="w-full px-4 py-3 bg-white/65 border border-white/70 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-gray-900 caret-gray-900 text-sm sm:text-base backdrop-blur-sm"
                       required
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-4">
@@ -307,9 +446,14 @@ export default function Login() {
 
                 {/* Password Input */}
                 <div className="space-y-2">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
+                  <div className="flex items-center justify-between gap-3">
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      Password
+                    </label>
+                    <Link href="/forgot-password" className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors">
+                      Forgot password?
+                    </Link>
+                  </div>
                   <div className="relative">
                     <input
                       id="password"
@@ -317,7 +461,8 @@ export default function Login() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
-                      className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-sm sm:text-base"
+                      autoComplete="off"
+                      className="w-full px-4 py-3 bg-white/65 border border-white/70 rounded-2xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-300 placeholder-gray-400 text-gray-900 caret-gray-900 text-sm sm:text-base backdrop-blur-sm"
                       required
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-4">
@@ -354,6 +499,20 @@ export default function Login() {
                   </span>
                 </button>
 
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  disabled={isLoading}
+                  className="w-full bg-white/85 border border-white/70 text-gray-700 py-3 px-6 rounded-2xl font-semibold text-sm sm:text-base hover:bg-white transition-all duration-300 focus:ring-4 focus:ring-gray-500/20 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+                >
+                  <span className="flex items-center justify-center space-x-3">
+                    <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
+                      <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.8-5.5 3.8-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.4 14.6 2.5 12 2.5 6.8 2.5 2.5 6.8 2.5 12s4.3 9.5 9.5 9.5c5.5 0 9.2-3.9 9.2-9.4 0-.6-.1-1.1-.2-1.6H12z"/>
+                    </svg>
+                    <span>Continue with Google</span>
+                  </span>
+                </button>
+
                 {/* Toggle between Login and Signup (only for patients) */}
                 {selectedUserType === 'patient' && (
                   <div className="text-center">
@@ -385,15 +544,15 @@ export default function Login() {
                   <div className="w-full border-t border-gray-200"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-4 bg-white/80 text-gray-500">or</span>
+                  <span className="px-4 bg-white/80 text-gray-500 rounded-full">or</span>
                 </div>
               </div>
 
               {/* Demo Access */}
               <button
                 type="button"
-                onClick={() => router.push('/dashboard')}
-                className="w-full bg-white/50 border border-gray-200 text-gray-700 py-3 px-6 rounded-2xl font-medium hover:bg-white/70 hover:border-gray-300 transition-all duration-300 focus:ring-4 focus:ring-gray-500/20 focus:outline-none active:scale-95"
+                onClick={() => router.push('/patient?demo=1')}
+                className="w-full bg-white/60 border border-white/70 text-gray-700 py-3 px-6 rounded-2xl font-medium hover:bg-white/75 hover:border-gray-300 transition-all duration-300 focus:ring-4 focus:ring-gray-500/20 focus:outline-none active:scale-95 backdrop-blur-sm"
               >
                 <span className="flex items-center justify-center space-x-2">
                   <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -428,7 +587,7 @@ export default function Login() {
 
         {/* Status Indicator */}
         <div className="mt-6 text-center">
-          <div className="inline-flex items-center bg-green-50 border border-green-200 rounded-full px-4 py-2">
+          <div className="inline-flex items-center bg-green-50/90 border border-green-200 rounded-full px-4 py-2 shadow-sm backdrop-blur-sm animate-fade-in-up animation-delay-400">
             <span className="w-2 h-2 bg-green-500 rounded-full mr-3 animate-pulse"></span>
             <span className="text-green-700 text-sm font-medium">System Online</span>
           </div>

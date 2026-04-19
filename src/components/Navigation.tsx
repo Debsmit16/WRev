@@ -28,7 +28,7 @@ export default function Navigation() {
   return (
     <>
       {/* Beautiful Mobile-Optimized Navigation */}
-      <nav className="backdrop-blur-md bg-white/95 border-b border-blue-100 sticky top-0 z-50 shadow-lg">
+      <nav className="sticky top-0 z-50 border-b border-white/40 bg-white/20 shadow-[0_10px_35px_-20px_rgba(15,23,42,0.55)] backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 sm:h-18">
             {/* Logo Section */}
@@ -76,8 +76,8 @@ export default function Navigation() {
                   href={item.href}
                   className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:scale-105 ${
                     isActive(item.href)
-                      ? 'text-blue-600 bg-blue-50 shadow-md'
-                      : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                      ? 'text-blue-700 bg-white/45 shadow-sm backdrop-blur-sm'
+                      : 'text-gray-700 hover:text-blue-700 hover:bg-white/35'
                   }`}
                 >
                   {item.label}
@@ -89,12 +89,6 @@ export default function Navigation() {
               >
                 Login
               </Link>
-              <Link
-                href="/admin"
-                className="ml-2 bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-2 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105 hover:from-purple-600 hover:to-indigo-600 text-sm"
-              >
-                Admin
-              </Link>
             </div>
           </div>
         </div>
@@ -105,7 +99,7 @@ export default function Navigation() {
             ? 'max-h-screen opacity-100' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
-          <div className="bg-gradient-to-b from-white/95 to-blue-50/95 backdrop-blur-md border-t border-blue-100 shadow-xl">
+          <div className="border-t border-white/45 bg-gradient-to-b from-white/35 via-sky-100/25 to-blue-100/35 backdrop-blur-xl shadow-xl">
             <div className="px-4 py-6 space-y-2">
               {navigationItems.map((item) => (
                 <Link
@@ -113,8 +107,8 @@ export default function Navigation() {
                   href={item.href}
                   className={`block py-3 px-4 rounded-xl font-medium transition-all duration-300 active:scale-95 ${
                     isActive(item.href)
-                      ? 'text-blue-600 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 shadow-md'
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:shadow-md'
+                      ? 'text-blue-700 bg-white/45 border border-white/55 shadow-md backdrop-blur-sm'
+                      : 'text-gray-700 hover:text-blue-700 hover:bg-white/35 hover:shadow-md'
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >

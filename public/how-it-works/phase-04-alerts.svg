@@ -1,0 +1,39 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E9F8FF"/>
+      <stop offset="0.55" stop-color="#F6FBFF"/>
+      <stop offset="1" stop-color="#CFEFFF"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="210" y1="150" x2="980" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#E1F7FF" stop-opacity="0.84"/>
+    </linearGradient>
+    <linearGradient id="alert" x1="430" y1="250" x2="800" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" rx="48" fill="url(#bg)"/>
+  <circle cx="220" cy="760" r="140" fill="#2563EB" fill-opacity="0.12"/>
+  <circle cx="980" cy="150" r="145" fill="#06B6D4" fill-opacity="0.20"/>
+  <rect x="175" y="140" width="850" height="640" rx="42" fill="url(#panel)" stroke="#FFFFFF" stroke-opacity="0.8"/>
+  <rect x="245" y="210" width="280" height="490" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <rect x="565" y="210" width="390" height="220" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <rect x="565" y="460" width="390" height="240" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <path d="M385 260C356 260 333 282 333 310V365C333 400 312 431 280 447V462H490V447C458 431 437 400 437 365V310C437 282 414 260 385 260Z" fill="url(#alert)" fill-opacity="0.12"/>
+  <path d="M385 248C347 248 317 278 317 316V370C317 403 299 433 268 448V470H502V448C471 433 453 403 453 370V316C453 278 423 248 385 248Z" fill="url(#alert)" fill-opacity="0.95"/>
+  <circle cx="385" cy="506" r="30" fill="#06B6D4" fill-opacity="0.14"/>
+  <path d="M385 530C369 530 355 544 355 560H415C415 544 401 530 385 530Z" fill="#2563EB" fill-opacity="0.95"/>
+  <path d="M340 345H430" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <path d="M385 300V404" stroke="white" stroke-width="12" stroke-linecap="round"/>
+  <rect x="610" y="256" width="120" height="18" rx="9" fill="#D7F0FF"/>
+  <rect x="610" y="296" width="220" height="18" rx="9" fill="#DCEEFF"/>
+  <rect x="610" y="336" width="170" height="18" rx="9" fill="#E6F5FF"/>
+  <rect x="610" y="502" width="275" height="30" rx="15" fill="#D7F0FF"/>
+  <rect x="610" y="552" width="340" height="30" rx="15" fill="#DCEEFF"/>
+  <rect x="610" y="602" width="240" height="30" rx="15" fill="#E6F5FF"/>
+  <circle cx="860" cy="314" r="42" fill="#2563EB" fill-opacity="0.92"/>
+  <path d="M860 282V342M830 312H890" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <text x="90" y="820" fill="#0F172A" fill-opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Alert phase</text>
+</svg>

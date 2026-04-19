@@ -44,15 +44,38 @@ export default function ProfileForm() {
   const loadProfile = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('patients')
-        .select('*')
-        .eq('id', user?.id)
-        .single();
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error('Missing auth session');
+      }
 
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error loading profile:', error);
-      } else if (data) {
+      const response = await fetch('/api/profile', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to load profile');
+      }
+
+      const payload = await response.json() as { profile: {
+        full_name?: string;
+        phone?: string;
+        date_of_birth?: string;
+        gender?: 'male' | 'female' | 'other' | '';
+        address?: string;
+        emergency_contact_name?: string;
+        emergency_contact_phone?: string;
+        medical_conditions?: string[];
+        medications?: string[];
+        allergies?: string[];
+      } | null };
+
+      const data = payload.profile;
+
+      if (data) {
         setProfile({
           full_name: data.full_name || '',
           phone: data.phone || '',
@@ -79,9 +102,12 @@ export default function ProfileForm() {
     setMessage('');
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        throw new Error('Missing auth session');
+      }
+
       const profileData = {
-        id: user?.id,
-        email: user?.email,
         full_name: profile.full_name,
         phone: profile.phone,
         date_of_birth: profile.date_of_birth,
@@ -92,15 +118,19 @@ export default function ProfileForm() {
         medical_conditions: profile.medical_conditions.split(',').map(s => s.trim()).filter(s => s),
         medications: profile.medications.split(',').map(s => s.trim()).filter(s => s),
         allergies: profile.allergies.split(',').map(s => s.trim()).filter(s => s),
-        updated_at: new Date().toISOString(),
       };
 
-      const { error } = await supabase
-        .from('patients')
-        .upsert(profileData);
+      const response = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData),
+      });
 
-      if (error) {
-        throw error;
+      if (!response.ok) {
+        throw new Error('Failed to save profile');
       }
 
       setMessage('Profile updated successfully!');

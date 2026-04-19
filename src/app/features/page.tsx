@@ -1,9 +1,123 @@
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 
+const featureCards = [
+  {
+    title: 'Hyperspectral IoT',
+    label: 'Signal layer',
+    description:
+      'Multi-sensor monitoring that blends respiratory, environmental, and movement data into one live health stream.',
+    bullets: ['Sensor fusion in real time', 'Covers indoor and outdoor triggers', 'Built for continuous monitoring'],
+    gradient: 'from-sky-500 via-blue-500 to-cyan-500',
+    accent: 'bg-sky-500/10 text-sky-700',
+    animation: 'animate-fade-in-left animation-delay-200',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 12h4l2-5 4 10 2-5h4"
+      />
+    ),
+  },
+  {
+    title: 'Edge AI',
+    label: 'Smart inference',
+    description:
+      'On-device intelligence spots patterns early, so alerts stay fast even when connectivity is weak or unstable.',
+    bullets: ['Low-latency decisions', 'Less dependence on the cloud', 'Adaptive alert scoring'],
+    gradient: 'from-cyan-500 via-blue-500 to-sky-600',
+    accent: 'bg-cyan-500/10 text-cyan-700',
+    animation: 'animate-fade-in-right animation-delay-300',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M13 10V3L4 14h7v7l9-11h-7z"
+      />
+    ),
+  },
+  {
+    title: 'SOS System',
+    label: 'Emergency response',
+    description:
+      'One-tap escalation sends critical alerts with the right context to family members and caregivers immediately.',
+    bullets: ['Priority emergency routing', 'Multi-recipient notifications', 'Clear event context'],
+    gradient: 'from-blue-600 via-cyan-500 to-sky-500',
+    accent: 'bg-blue-500/10 text-blue-700',
+    animation: 'animate-fade-in-left animation-delay-400',
+    icon: (
+      <>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01" />
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2}
+          d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+        />
+      </>
+    ),
+  },
+  {
+    title: 'Offline Mode',
+    label: 'Always available',
+    description:
+      'Core alerts and saved insights remain available offline, so the system keeps working when the signal drops.',
+    bullets: ['Local-first protection', 'Stores recent readings safely', 'Syncs automatically later'],
+    gradient: 'from-sky-500 via-cyan-500 to-blue-600',
+    accent: 'bg-cyan-600/10 text-cyan-800',
+    animation: 'animate-fade-in-right animation-delay-500',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M8 16h8M12 12h.01M9 6h6l2 3H7l2-3zm1-2h2"
+      />
+    ),
+  },
+  {
+    title: 'Doctor Connect',
+    label: 'Care network',
+    description:
+      'Share trends, summaries, and critical events with doctors so they can review respiratory health with better context.',
+    bullets: ['Clinical-ready summaries', 'Secure sharing workflow', 'Care team visibility'],
+    gradient: 'from-cyan-500 via-sky-500 to-blue-500',
+    accent: 'bg-sky-600/10 text-sky-800',
+    animation: 'animate-fade-in-left animation-delay-600',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H4v-2a4 4 0 015-3.87m0 0a4 4 0 100-7.26m0 7.26a4 4 0 110-7.26m8 7.26a4 4 0 100-7.26m0 7.26a4 4 0 110-7.26"
+      />
+    ),
+  },
+  {
+    title: 'Affordable',
+    label: 'Accessible care',
+    description:
+      'A cost-conscious design keeps the system usable for more families, clinics, and communities without trimming the essentials.',
+    bullets: ['Lower operating overhead', 'Scales without heavy hardware', 'Practical for wide deployment'],
+    gradient: 'from-blue-500 via-sky-500 to-cyan-500',
+    accent: 'bg-blue-500/10 text-blue-800',
+    animation: 'animate-zoom-in-soft animation-delay-700',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 8c-1.66 0-3 1-3 2.25S10.34 12.5 12 12.5s3 1 3 2.25S13.66 17 12 17m0-9V6m0 11v-2m9-5a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    ),
+  },
+];
+
 export default function Features() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-blue-50 to-cyan-100/60">
       {/* Navigation */}
       <nav className="backdrop-blur-md bg-white/80 border-b border-white/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,15 +142,71 @@ export default function Features() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-20">
+      <section className="relative overflow-hidden py-24 section-sheen">
+        <div className="absolute -left-20 top-12 h-48 w-48 rounded-full bg-blue-200/30 blur-3xl"></div>
+        <div className="absolute -right-20 bottom-8 h-48 w-48 rounded-full bg-cyan-200/30 blur-3xl"></div>
+        <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] [background-size:40px_40px]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-6">
-              Powerful Features
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive respiratory health monitoring with advanced technology and intelligent insights
-            </p>
+          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+            <div className="animate-fade-in-down">
+              <div className="mb-5 inline-flex items-center rounded-full border border-white/70 bg-white/50 px-4 py-2 text-sm font-semibold text-blue-700 shadow-md backdrop-blur-md">
+                <span className="mr-2 h-2 w-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                Feature set designed for fast care decisions
+              </div>
+              <h1 className="max-w-2xl text-5xl font-bold leading-tight bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-600 bg-clip-text text-transparent mb-6 animate-gradient">
+                Powerful Features, shaped for real respiratory care.
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl leading-relaxed">
+                WRev combines sensor intelligence, emergency response, and care-team connectivity into one clear system.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <span className="rounded-full border border-white/70 bg-white/55 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">
+                  Live insights
+                </span>
+                <span className="rounded-full border border-white/70 bg-white/55 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">
+                  Emergency ready
+                </span>
+                <span className="rounded-full border border-white/70 bg-white/55 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">
+                  Care-team sharing
+                </span>
+              </div>
+            </div>
+
+            <div className="relative animate-zoom-in-soft animation-delay-400">
+              <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-blue-400/20 via-cyan-300/10 to-transparent blur-2xl"></div>
+              <div className="card-glow relative rounded-[2rem] p-6 shadow-2xl">
+                <div className="mb-5 flex items-center justify-between">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.35em] text-blue-500">System snapshot</p>
+                    <h2 className="mt-2 text-xl font-semibold text-gray-900">A cleaner signal flow</h2>
+                  </div>
+                  <div className="rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-2 text-xs font-semibold text-white shadow-lg">
+                    6 core cards
+                  </div>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-md">
+                    <p className="text-sm font-medium text-gray-500">Alert speed</p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900">&lt; 5s</p>
+                    <p className="mt-1 text-sm text-gray-600">Fast enough for critical response windows</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-md">
+                    <p className="text-sm font-medium text-gray-500">Uptime mode</p>
+                    <p className="mt-2 text-3xl font-bold text-gray-900">Offline</p>
+                    <p className="mt-1 text-sm text-gray-600">Keeps core protection active even without signal</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-md sm:col-span-2">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Care bridge</p>
+                        <p className="mt-2 text-lg font-semibold text-gray-900">Doctor Connect + SOS escalation</p>
+                      </div>
+                      <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-sky-500 to-cyan-500 shadow-lg"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -44,226 +214,89 @@ export default function Features() {
       {/* Main Features Grid */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* SpO2 Monitoring */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {featureCards.map((feature) => (
+              <article
+                key={feature.title}
+                className={`card-glow rounded-[1.75rem] p-7 shadow-xl hover-lift ${feature.animation}`}
+              >
+                <div className="mb-5 flex items-center justify-between gap-4">
+                  <div className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${feature.accent}`}>
+                    {feature.label}
+                  </div>
+                  <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${feature.gradient} p-[1px] shadow-lg`}>
+                    <div className="flex h-full w-full items-center justify-center rounded-2xl bg-white/95">
+                      <svg className="h-7 w-7 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {feature.icon}
+                      </svg>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">SpO2 Monitoring</h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    Continuous oxygen saturation tracking with medical-grade precision. Real-time alerts when levels drop below safe thresholds.
-                  </p>
-                  <ul className="space-y-2 text-gray-600">
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      24/7 continuous monitoring
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Customizable alert thresholds
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Historical trend analysis
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
 
-            {/* Air Quality Monitoring */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">Air Quality Monitoring</h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    Environmental sensors tracking pollutants, allergens, and air quality factors that affect respiratory health.
-                  </p>
-                  <ul className="space-y-2 text-gray-600">
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      PM2.5 and PM10 detection
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      VOC and allergen tracking
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Weather correlation analysis
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+                <h3 className="text-2xl font-bold text-gray-900">{feature.title}</h3>
+                <p className="mt-4 text-gray-600 leading-relaxed">{feature.description}</p>
 
-            {/* Geo-Tagged Warnings */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">Geo-Tagged Warnings</h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    Location-based health alerts and environmental hazard notifications to help you avoid respiratory triggers.
-                  </p>
-                  <ul className="space-y-2 text-gray-600">
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Real-time location tracking
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Pollution hotspot alerts
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Safe route recommendations
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+                <div className="mt-6 h-px bg-gradient-to-r from-transparent via-white/90 to-transparent"></div>
 
-            {/* Caregiver Notifications */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-4">Caregiver Notifications</h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    Instant alerts to family members and healthcare providers during emergencies or concerning health events.
-                  </p>
-                  <ul className="space-y-2 text-gray-600">
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Multi-channel notifications
+                <ul className="mt-6 space-y-3 text-gray-700">
+                  {feature.bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-3">
+                      <span className={`mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-gradient-to-r ${feature.gradient}`}></span>
+                      <span className="leading-relaxed">{bullet}</span>
                     </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Emergency contact system
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      Healthcare provider integration
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+                  ))}
+                </ul>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Additional Features */}
-      <section className="py-16 bg-gradient-to-r from-blue-50/50 to-cyan-50/50">
+      {/* Supporting section */}
+      <section className="py-16 bg-gradient-to-r from-blue-50/60 to-cyan-50/60 section-sheen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Additional Capabilities</h2>
-            <p className="text-lg text-gray-600">More features to enhance your respiratory health management</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
+          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="card-glow rounded-[2rem] p-8 shadow-xl animate-fade-in-left">
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Why it feels better</p>
+              <h2 className="mt-4 text-3xl font-bold text-gray-900">A calmer interface with clearer signals.</h2>
+              <p className="mt-4 max-w-2xl text-gray-600 leading-relaxed">
+                The new layout gives every feature a stronger visual rhythm, clearer spacing, and easier scanning on both desktop and mobile.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <span className="rounded-full bg-white/70 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">Glass cards</span>
+                <span className="rounded-full bg-white/70 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">Directional motion</span>
+                <span className="rounded-full bg-white/70 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">Simpler scanning</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Data Analytics</h3>
-              <p className="text-gray-600 text-sm">Advanced analytics and insights from your health data</p>
             </div>
 
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
+            <div className="card-glow rounded-[2rem] p-8 shadow-xl animate-zoom-in-soft animation-delay-300">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-semibold text-gray-500">Feature density</p>
+                  <p className="mt-2 text-4xl font-bold text-gray-900">6</p>
+                </div>
+                <div className="h-20 w-20 rounded-[1.5rem] bg-gradient-to-br from-blue-500 via-sky-500 to-cyan-500 p-[1px] shadow-xl">
+                  <div className="flex h-full w-full items-center justify-center rounded-[1.45rem] bg-white/90">
+                    <svg className="h-10 w-10 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h10" />
+                    </svg>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Mobile App</h3>
-              <p className="text-gray-600 text-sm">Full-featured mobile application for iOS and Android</p>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+              <div className="mt-6 grid gap-4 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                <div className="rounded-2xl bg-white/70 p-4 text-center backdrop-blur-md">
+                  <p className="text-2xl font-bold text-gray-900">Fast</p>
+                  <p className="text-sm text-gray-600">alerts</p>
+                </div>
+                <div className="rounded-2xl bg-white/70 p-4 text-center backdrop-blur-md">
+                  <p className="text-2xl font-bold text-gray-900">Smart</p>
+                  <p className="text-sm text-gray-600">context</p>
+                </div>
+                <div className="rounded-2xl bg-white/70 p-4 text-center backdrop-blur-md">
+                  <p className="text-2xl font-bold text-gray-900">Wide</p>
+                  <p className="text-sm text-gray-600">access</p>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">HIPAA Compliant</h3>
-              <p className="text-gray-600 text-sm">Enterprise-grade security and privacy protection</p>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">API Integration</h3>
-              <p className="text-gray-600 text-sm">Connect with existing healthcare systems and devices</p>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">AI Predictions</h3>
-              <p className="text-gray-600 text-sm">Machine learning for predictive health insights</p>
-            </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">24/7 Support</h3>
-              <p className="text-gray-600 text-sm">Round-the-clock technical and medical support</p>
             </div>
           </div>
         </div>

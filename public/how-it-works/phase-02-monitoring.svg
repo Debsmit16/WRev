@@ -1,0 +1,40 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0FBFF"/>
+      <stop offset="0.55" stop-color="#F3FAFF"/>
+      <stop offset="1" stop-color="#CDEFFF"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="190" y1="150" x2="1010" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#DDF8FF" stop-opacity="0.86"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="260" y1="500" x2="940" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="0.5" stop-color="#06B6D4"/>
+      <stop offset="1" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" rx="48" fill="url(#bg)"/>
+  <circle cx="180" cy="740" r="150" fill="#2563EB" fill-opacity="0.15"/>
+  <circle cx="1010" cy="160" r="140" fill="#06B6D4" fill-opacity="0.22"/>
+  <rect x="170" y="130" width="860" height="640" rx="42" fill="url(#panel)" stroke="#FFFFFF" stroke-opacity="0.8"/>
+  <rect x="270" y="220" width="250" height="480" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <rect x="570" y="220" width="390" height="210" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <rect x="570" y="460" width="390" height="240" rx="34" fill="#F8FCFF" stroke="#CFEFFF" stroke-width="4"/>
+  <circle cx="395" cy="330" r="72" fill="url(#wave)" fill-opacity="0.12"/>
+  <circle cx="395" cy="330" r="44" fill="url(#wave)" fill-opacity="0.22"/>
+  <path d="M315 530C355 470 395 420 435 358C457 323 480 290 500 270" stroke="url(#wave)" stroke-width="12" stroke-linecap="round"/>
+  <path d="M315 560H487" stroke="#CFEFFF" stroke-width="10" stroke-linecap="round"/>
+  <path d="M315 600H450" stroke="#E3F4FF" stroke-width="10" stroke-linecap="round"/>
+  <path d="M315 640H420" stroke="#E3F4FF" stroke-width="10" stroke-linecap="round"/>
+  <rect x="620" y="258" width="120" height="18" rx="9" fill="#D7F0FF"/>
+  <rect x="620" y="298" width="230" height="18" rx="9" fill="#DCEEFF"/>
+  <rect x="620" y="338" width="170" height="18" rx="9" fill="#E6F5FF"/>
+  <rect x="620" y="500" width="280" height="34" rx="17" fill="#D7F0FF"/>
+  <rect x="620" y="556" width="320" height="34" rx="17" fill="#DCEEFF"/>
+  <rect x="620" y="612" width="220" height="34" rx="17" fill="#E6F5FF"/>
+  <circle cx="858" cy="317" r="42" fill="#2563EB" fill-opacity="0.92"/>
+  <path d="M858 289V345M830 317H886" stroke="white" stroke-width="10" stroke-linecap="round"/>
+  <text x="90" y="820" fill="#0F172A" fill-opacity="0.5" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">Monitoring phase</text>
+</svg>

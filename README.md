@@ -71,6 +71,25 @@ npm run dev
 yarn dev
 ```
 
+### Environment Variables
+Create a `.env.local` file in the project root with:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+```
+
+`SUPABASE_SERVICE_ROLE_KEY` is used only on server routes for secure role verification. Never expose it in client code.
+
+### Google Login Setup (Supabase)
+1. In Supabase, go to `Authentication -> Providers -> Google` and enable Google.
+2. Add your Google OAuth Client ID and Secret.
+3. Add redirect URLs:
+	- `http://localhost:3000/login`
+	- `https://your-domain/login`
+4. In Google Cloud Console, add matching Authorized redirect URIs using your Supabase auth callback URL.
+
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📁 Project Structure
@@ -118,7 +137,10 @@ This project is optimized for deployment on Vercel:
 3. Deploy automatically with each push to main branch
 
 ### Environment Variables
-No environment variables required for basic deployment.
+Set these in your deployment provider:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
 
 ## 👥 Team
 

@@ -36,7 +36,11 @@ Click the button below to deploy directly:
    - **Install Command**: `npm install` (auto-detected)
 
 4. **Environment Variables**
-   - No environment variables required for basic deployment
+   - Add the following environment variables:
+     - `NEXT_PUBLIC_SUPABASE_URL`
+     - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+     - `SUPABASE_SERVICE_ROLE_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY` must be configured as a server-side secret only
    - Click "Deploy" to proceed
 
 5. **Deploy**
@@ -72,7 +76,18 @@ Click the button below to deploy directly:
 ### 2. Environment Variables (If needed later)
 - Go to project settings
 - Navigate to "Environment Variables"
-- Add any required variables
+- Add auth variables required by this project:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+
+### 3. Google OAuth Provider Setup
+- In Supabase: `Authentication -> Providers -> Google` and enable the provider
+- Add your Google OAuth Client ID and Client Secret
+- Add app login redirect URLs:
+   - `http://localhost:3000/login`
+   - `https://<your-production-domain>/login`
+- In Google Cloud Console, whitelist the matching Supabase callback URL shown in provider settings
 
 ### 3. Automatic Deployments
 - Every push to `master` branch will trigger automatic deployment

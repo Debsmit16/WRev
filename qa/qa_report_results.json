@@ -1,0 +1,62 @@
+[
+    {
+        "TestID":  "RouteExist_root",
+        "Route":  "/",
+        "Status":  "Pass",
+        "ActualResult":  "Status: 200"
+    },
+    {
+        "TestID":  "RouteExist_rootlogin",
+        "Route":  "/login",
+        "Status":  "Pass",
+        "ActualResult":  "Status: 200"
+    },
+    {
+        "TestID":  "RouteExist_rootforgot-password",
+        "Route":  "/forgot-password",
+        "Status":  "Pass",
+        "ActualResult":  "Status: 200"
+    },
+    {
+        "TestID":  "RouteExist_rootabout",
+        "Route":  "/about",
+        "Status":  "Pass",
+        "ActualResult":  "Status: 200"
+    },
+    {
+        "TestID":  "SecurityHeader_Strict-Transport-Security",
+        "Route":  "/",
+        "Status":  "Fail",
+        "ActualResult":  "Missing"
+    },
+    {
+        "TestID":  "SecurityHeader_Content-Security-Policy",
+        "Route":  "/",
+        "Status":  "Pass",
+        "ActualResult":  "Present: default-src \u0027self\u0027; script-src \u0027self\u0027 \u0027unsafe-inline\u0027 \u0027unsafe-eval\u0027 https://*.googleapis.com https://*.gstatic.com; style-src \u0027self\u0027 \u0027unsafe-inline\u0027 https://fonts.googleapis.com; img-src \u0027self\u0027 data: blob:; font-src \u0027self\u0027 https://fonts.gstatic.com; connect-src \u0027self\u0027 https://*.supabase.co https://*.googleapis.com https://*.gstatic.com; frame-src \u0027self\u0027 https://*.google.com; object-src \u0027none\u0027; base-uri \u0027self\u0027; form-action \u0027self\u0027 https://*.supabase.co"
+    },
+    {
+        "TestID":  "SecurityHeader_X-Frame-Options",
+        "Route":  "/",
+        "Status":  "Pass",
+        "ActualResult":  "Present: DENY"
+    },
+    {
+        "TestID":  "SecurityHeader_X-Content-Type-Options",
+        "Route":  "/",
+        "Status":  "Pass",
+        "ActualResult":  "Present: nosniff"
+    },
+    {
+        "TestID":  "LoginText_SignInto",
+        "Route":  "/login",
+        "Status":  "Fail",
+        "ActualResult":  "Text not found"
+    },
+    {
+        "TestID":  "FP_ResetPassword",
+        "Route":  "/forgot-password",
+        "Status":  "Pass",
+        "ActualResult":  "Found text"
+    }
+]

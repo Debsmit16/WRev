@@ -1,11 +1,79 @@
 import Footer from '@/components/Footer';
+import Image from 'next/image';
 import Link from 'next/link';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Setup & Installation',
+    description:
+      'Receive the WRev kit, connect the sensors, and complete a guided setup in minutes with a clean onboarding flow.',
+    bullets: ['Unbox and connect sensors', 'Download the mobile app', 'Complete initial calibration'],
+    image: '/how-it-works/phase-01-setup.svg',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+      />
+    ),
+  },
+  {
+    number: '02',
+    title: 'Continuous Monitoring',
+    description:
+      'Once active, WRev tracks respiratory health and environmental conditions around the clock with steady, low-friction monitoring.',
+    bullets: ['Real-time SpO2 tracking', 'Air quality assessment', 'Environmental data collection'],
+    image: '/how-it-works/phase-02-monitoring.svg',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+      />
+    ),
+  },
+  {
+    number: '03',
+    title: 'Intelligent Analysis',
+    description:
+      'AI models identify patterns, flag risk changes, and turn raw readings into clear guidance that is easy to act on.',
+    bullets: ['Pattern recognition', 'Predictive analytics', 'Personalized recommendations'],
+    image: '/how-it-works/phase-03-analysis.svg',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+      />
+    ),
+  },
+  {
+    number: '04',
+    title: 'Alerts & Notifications',
+    description:
+      'When something needs attention, WRev escalates instantly to the right people so the response stays fast and coordinated.',
+    bullets: ['Instant mobile alerts', 'Caregiver notifications', 'Healthcare provider integration'],
+    image: '/how-it-works/phase-04-alerts.svg',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.5}
+        d="M15 17h5l-5 5v-5zM12 17h.01M6 17h.01M12 3v4m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
+      />
+    ),
+  },
+];
 
 export default function HowItWorks() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-sky-100 via-blue-50 to-cyan-50/70">
       {/* Navigation */}
-      <nav className="backdrop-blur-md bg-white/80 border-b border-white/20 sticky top-0 z-50">
+      <nav className="sticky top-0 z-50 border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-[0_1px_0_rgba(255,255,255,0.35)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
@@ -28,259 +96,205 @@ export default function HowItWorks() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-20">
+      <section className="relative overflow-hidden py-24 section-sheen">
+        <div className="absolute -left-20 top-10 h-52 w-52 rounded-full bg-blue-200/30 blur-3xl"></div>
+        <div className="absolute -right-20 bottom-10 h-52 w-52 rounded-full bg-cyan-200/30 blur-3xl"></div>
+        <div className="absolute left-[12%] top-[18%] h-16 w-16 rounded-full bg-white/40 blur-2xl animate-float"></div>
+        <div className="absolute right-[18%] top-[28%] h-20 w-20 rounded-full bg-cyan-300/20 blur-2xl animate-float-delayed"></div>
+        <div className="absolute inset-0 opacity-20 [background-image:linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] [background-size:42px_42px]"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent mb-6">
-              How It Works
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Simple setup, powerful monitoring, and intelligent insights for better respiratory health
-            </p>
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="animate-fade-in-up">
+              <div className="mb-5 inline-flex items-center rounded-full border border-white/70 bg-white/55 px-4 py-2 text-sm font-semibold text-blue-700 shadow-lg backdrop-blur-md">
+                <span className="mr-2 h-2 w-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                Clear workflow from setup to care escalation
+              </div>
+              <h1 className="max-w-2xl text-5xl font-bold leading-tight bg-gradient-to-r from-blue-700 via-sky-600 to-cyan-600 bg-clip-text text-transparent mb-6 animate-gradient">
+                How it works, in a cleaner and more guided flow.
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl leading-relaxed">
+                WRev turns respiratory monitoring into a simple sequence: install, monitor, analyze, and act before small issues become larger ones.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <span className="rounded-full border border-white/70 bg-white/60 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">Setup in minutes</span>
+                <span className="rounded-full border border-white/70 bg-white/60 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">Continuous tracking</span>
+                <span className="rounded-full border border-white/70 bg-white/60 px-4 py-2 text-sm font-medium text-gray-700 shadow-sm backdrop-blur-md">Actionable alerts</span>
+              </div>
+            </div>
+
+            <div className="relative animate-zoom-in-soft animation-delay-400">
+              <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-blue-400/20 via-cyan-300/10 to-transparent blur-2xl"></div>
+              <div className="card-glow relative rounded-[2rem] p-6 shadow-2xl">
+                <div className="flex items-center justify-between gap-4 border-b border-white/60 pb-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.35em] text-blue-500">Workflow preview</p>
+                    <h2 className="mt-2 text-xl font-semibold text-gray-900">A guided sequence that feels light</h2>
+                  </div>
+                  <div className="rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 px-4 py-2 text-xs font-semibold text-white shadow-lg">
+                    4 steps
+                  </div>
+                </div>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-md">
+                    <p className="text-sm font-medium text-gray-500">System mode</p>
+                    <p className="mt-2 text-2xl font-bold text-gray-900">Always on</p>
+                    <p className="mt-1 text-sm text-gray-600">Monitoring stays active throughout the day</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-md">
+                    <p className="text-sm font-medium text-gray-500">Alert path</p>
+                    <p className="mt-2 text-2xl font-bold text-gray-900">Direct</p>
+                    <p className="mt-1 text-sm text-gray-600">Critical issues move quickly to the right people</p>
+                  </div>
+                  <div className="rounded-2xl border border-white/70 bg-white/65 p-4 backdrop-blur-md sm:col-span-2">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-gray-500">Motion language</p>
+                        <p className="mt-2 text-lg font-semibold text-gray-900">Side-scroll + vertical reveal</p>
+                      </div>
+                      <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-sky-500 to-cyan-500 shadow-lg"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Process Steps */}
+      {/* Process Preview Strip */}
+      <section className="pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="overflow-x-auto pb-3">
+            <div className="flex min-w-max snap-x snap-mandatory gap-5 pr-6">
+              {steps.map((step, index) => (
+                <div key={step.number} className={`card-glow min-w-[280px] max-w-[320px] snap-start rounded-[1.75rem] p-5 shadow-xl ${index % 2 === 0 ? 'animate-fade-in-up' : 'animate-zoom-in-soft'} animation-delay-${(index + 1) * 200}`}>
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.35em] text-blue-500">Step {step.number}</p>
+                      <h3 className="mt-2 text-xl font-bold text-gray-900">{step.title}</h3>
+                    </div>
+                    <div className="h-12 w-12 overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 p-[1px] shadow-lg">
+                      <div className="flex h-full w-full items-center justify-center rounded-2xl bg-white/95 text-blue-700">
+                        <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          {step.icon}
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-600">{step.description}</p>
+                  <div className="mt-5 h-px bg-gradient-to-r from-transparent via-white/90 to-transparent"></div>
+                  <ul className="mt-5 space-y-2 text-sm text-gray-700">
+                    {step.bullets.map((bullet) => (
+                      <li key={bullet} className="flex items-start gap-3">
+                        <span className="mt-1 h-2 w-2 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500"></span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Workflow Timeline */}
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 animate-fade-in-down">
+            <div className="inline-flex items-center rounded-full border border-white/70 bg-white/55 px-4 py-2 text-sm font-semibold text-blue-700 shadow-md backdrop-blur-md">
+              <span className="mr-2 h-2 w-2 rounded-full bg-cyan-500 animate-pulse"></span>
+              The main care loop
+            </div>
+            <h2 className="mt-5 text-3xl font-bold text-gray-900 mb-4">A visual path from signal to action</h2>
+            <p className="text-lg text-gray-600">Each stage is clear, calm, and designed to make the next step obvious.</p>
+          </div>
           <div className="relative">
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-blue-200 to-cyan-200"></div>
-            
-            <div className="space-y-16">
-              {/* Step 1 */}
-              <div className="relative flex flex-col lg:flex-row items-center">
-                <div className="lg:w-1/2 lg:pr-12 mb-8 lg:mb-0">
-                  <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-                    <div className="flex items-center mb-6">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                        1
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900">Setup & Installation</h3>
-                    </div>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      Receive your WRev monitoring kit and follow our simple setup guide. Our sensors are designed 
-                      for easy installation in your home or workplace environment.
-                    </p>
-                    <ul className="space-y-2 text-gray-600">
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Unbox and connect sensors
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Download mobile app
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Complete initial calibration
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="lg:w-1/2 lg:pl-12">
-                  <div className="bg-gradient-to-br from-blue-100 to-cyan-100 rounded-3xl p-8 h-64 flex items-center justify-center">
-                    <svg className="w-32 h-32 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                  </div>
-                </div>
-                {/* Step indicator */}
-                <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full border-4 border-white shadow-lg"></div>
-              </div>
+            <div className="hidden lg:block absolute left-1/2 top-0 h-full w-px -translate-x-1/2 bg-gradient-to-b from-blue-200 via-cyan-200 to-blue-200"></div>
+            <div className="space-y-10 lg:space-y-14">
+              {steps.map((step, index) => {
+                const reverse = index % 2 === 1;
 
-              {/* Step 2 */}
-              <div className="relative flex flex-col lg:flex-row-reverse items-center">
-                <div className="lg:w-1/2 lg:pl-12 mb-8 lg:mb-0">
-                  <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-                    <div className="flex items-center mb-6">
-                      <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                        2
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900">Continuous Monitoring</h3>
-                    </div>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      Once set up, WRev continuously monitors your respiratory health and environmental conditions. 
-                      Our sensors work 24/7 to track vital signs and air quality.
-                    </p>
-                    <ul className="space-y-2 text-gray-600">
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Real-time SpO2 tracking
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Air quality assessment
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Environmental data collection
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="lg:w-1/2 lg:pr-12">
-                  <div className="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-3xl p-8 h-64 flex items-center justify-center">
-                    <svg className="w-32 h-32 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full border-4 border-white shadow-lg"></div>
-              </div>
+                return (
+                  <div
+                    key={step.number}
+                    className={`relative flex flex-col items-center gap-6 lg:flex-row ${reverse ? 'lg:flex-row-reverse' : ''}`}
+                  >
+                    <div className="hidden lg:block absolute left-1/2 top-1/2 h-7 w-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-gradient-to-r from-blue-500 to-cyan-500 shadow-lg"></div>
 
-              {/* Step 3 */}
-              <div className="relative flex flex-col lg:flex-row items-center">
-                <div className="lg:w-1/2 lg:pr-12 mb-8 lg:mb-0">
-                  <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-                    <div className="flex items-center mb-6">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                        3
-                      </div>
-                      <h3 className="text-2xl font-bold text-gray-900">Intelligent Analysis</h3>
-                    </div>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      Our AI algorithms analyze your data patterns to identify trends, predict potential issues, 
-                      and provide personalized health insights and recommendations.
-                    </p>
-                    <ul className="space-y-2 text-gray-600">
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Pattern recognition
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Predictive analytics
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Personalized recommendations
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="lg:w-1/2 lg:pl-12">
-                  <div className="bg-gradient-to-br from-blue-100 to-cyan-100 rounded-3xl p-8 h-64 flex items-center justify-center">
-                    <svg className="w-32 h-32 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-full border-4 border-white shadow-lg"></div>
-              </div>
+                    <div className={`w-full lg:w-1/2 ${reverse ? 'lg:pl-12' : 'lg:pr-12'} animate-${reverse ? 'fade-in-right' : 'fade-in-left'} animation-delay-${(index + 1) * 200}`}>
+                      <div className="card-glow rounded-[2rem] p-8 shadow-xl">
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-4">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-lg font-bold text-white shadow-lg">
+                              {step.number.replace('0', '')}
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-[0.35em] text-blue-500">Phase {step.number}</p>
+                              <h3 className="text-2xl font-bold text-gray-900">{step.title}</h3>
+                            </div>
+                          </div>
+                          <div className="hidden sm:block rounded-full border border-white/70 bg-white/60 px-3 py-1 text-xs font-semibold text-gray-600 backdrop-blur-md">
+                            Step {step.number}
+                          </div>
+                        </div>
 
-              {/* Step 4 */}
-              <div className="relative flex flex-col lg:flex-row-reverse items-center">
-                <div className="lg:w-1/2 lg:pl-12 mb-8 lg:mb-0">
-                  <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/20">
-                    <div className="flex items-center mb-6">
-                      <div className="w-12 h-12 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                        4
+                        <p className="mt-5 text-gray-600 leading-relaxed">{step.description}</p>
+
+                        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                          {step.bullets.map((bullet) => (
+                            <div key={bullet} className="rounded-2xl border border-white/70 bg-white/70 px-4 py-3 text-sm font-medium text-gray-700 backdrop-blur-md">
+                              {bullet}
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-900">Alerts & Notifications</h3>
                     </div>
-                    <p className="text-gray-600 mb-4 leading-relaxed">
-                      When concerning patterns are detected, WRev immediately alerts you and your caregivers. 
-                      Emergency notifications ensure rapid response when needed most.
-                    </p>
-                    <ul className="space-y-2 text-gray-600">
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Instant mobile alerts
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Caregiver notifications
-                      </li>
-                      <li className="flex items-center">
-                        <svg className="w-4 h-4 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        Healthcare provider integration
-                      </li>
-                    </ul>
+
+                    <div className={`w-full lg:w-1/2 ${reverse ? 'lg:pr-12' : 'lg:pl-12'} animate-zoom-in-soft animation-delay-${(index + 1) * 200 + 200}`}>
+                      <div className="relative card-glow overflow-hidden rounded-[2rem] p-8 shadow-xl">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/20 to-cyan-100/30"></div>
+                        <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-400/15 blur-3xl"></div>
+                        <div className="absolute -bottom-10 -left-8 h-24 w-24 rounded-full bg-cyan-400/15 blur-3xl"></div>
+                        <div className="relative h-64 overflow-hidden rounded-[1.5rem] border border-white/70 bg-white/50">
+                          <Image src={step.image} alt={step.title} fill className="object-cover" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-blue-950/35 via-transparent to-white/0"></div>
+                          <div className="absolute left-4 top-4 rounded-full border border-white/70 bg-white/70 px-3 py-1 text-xs font-semibold text-blue-700 backdrop-blur-md">
+                            Phase {step.number}
+                          </div>
+                          <div className="absolute bottom-4 left-4 right-4 rounded-2xl border border-white/70 bg-white/70 p-4 backdrop-blur-md">
+                            <p className="text-sm font-semibold text-gray-900">{step.title}</p>
+                            <p className="mt-1 text-xs text-gray-600">Visual reference for {step.number}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="lg:w-1/2 lg:pr-12">
-                  <div className="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-3xl p-8 h-64 flex items-center justify-center">
-                    <svg className="w-32 h-32 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M15 17h5l-5 5v-5zM12 17h.01M6 17h.01M12 3v4m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-full border-4 border-white shadow-lg"></div>
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Technology Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-50/50 to-cyan-50/50">
+      {/* Bottom strip */}
+      <section className="py-16 bg-gradient-to-r from-blue-50/60 to-cyan-50/60 section-sheen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Advanced Technology</h2>
-            <p className="text-lg text-gray-600">Powered by cutting-edge sensors and AI algorithms</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 7.172V5L8 4z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Medical-Grade Sensors</h3>
-              <p className="text-gray-600">
-                FDA-approved sensors providing hospital-quality monitoring in your home environment
-              </p>
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="card-glow rounded-[1.75rem] p-6 shadow-lg animate-fade-in-left">
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Built for clarity</p>
+              <h3 className="mt-4 text-xl font-bold text-gray-900">No clutter, no guesswork</h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">The page structure keeps each stage separated, readable, and visually calm.</p>
             </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">AI-Powered Analytics</h3>
-              <p className="text-gray-600">
-                Machine learning algorithms trained on millions of data points for accurate predictions
-              </p>
+            <div className="card-glow rounded-[1.75rem] p-6 shadow-lg animate-zoom-in-soft animation-delay-300">
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-cyan-600">Motion language</p>
+              <h3 className="mt-4 text-xl font-bold text-gray-900">Horizontal + vertical reveals</h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">A side-scroll preview strip and alternating workflow panels add depth without feeling busy.</p>
             </div>
-
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/20 text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Secure Cloud Platform</h3>
-              <p className="text-gray-600">
-                HIPAA-compliant cloud infrastructure ensuring your health data is always protected
-              </p>
+            <div className="card-glow rounded-[1.75rem] p-6 shadow-lg animate-fade-in-right animation-delay-600">
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Professional feel</p>
+              <h3 className="mt-4 text-xl font-bold text-gray-900">Transparent glass boxes</h3>
+              <p className="mt-3 text-gray-600 leading-relaxed">Soft borders, blur, and layered gradients keep the UI premium and modern.</p>
             </div>
           </div>
         </div>
